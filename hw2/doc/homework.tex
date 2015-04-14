@@ -1,0 +1,376 @@
+\input{../../dep/dsa-hw-template.tex}
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+\maketitle
+
+\pagebreak
+
+\pagenumbering{arabic}  
+\begin{homeworkProblem}{More about c++}
+    \textbf{(1)} The \alg{sub1} may result in a run-time error. Why?
+    \\
+
+    This function return a reference to a local varible, whose lifetime limited to
+    the scope of the function call. Once \alg{sub1} return, \alg{int c} is dead. 
+    Reference to a dead object is useless. Therefore, it would result in a run-time
+    error.
+    \\
+
+    \textbf{(2)} The \alg{sub2} does not result in a run-time error,
+    but there may be some other problem. What is the problem?
+    \\
+
+    \alg{int *pc} is allocated on the heap memory not on the stack memory, that is,
+    its lifetime doesn't limited to the function call. Therefore, this function works.
+    However, clients who call this function need to free memory by themselves. That is
+    annoying since clients do not allocte anything but have to free something out. If
+    clients forget to free memory, terrible memory leak occurs.
+    \\
+    
+\end{homeworkProblem}
+
+\begin{homeworkProblem}{Arrays, Linked List, and Recursion}
+    \textbf{(1)} Do Exercise C-3.4 of the textbook. (The faster the better!)
+    \\
+
+    Sort the array $A$ first, and go through the whole array to find which values are as 
+    same as their neighbors.
+    \\
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \State{\Call{Quick-Sort}{$A$}}
+            \State{$i \gets 1$}
+            \State{$old \gets A[0]$}
+            \While{$i \neq n$}
+                \If{$old$ is equal to $A[i]$}
+                \State{$old$ is one of the $repeated~integers$}
+                \EndIf
+                \State{$old \gets A[i]$}
+                \State{$i \gets i + 1$}
+            \EndWhile
+        \end{algorithmic}
+        \caption{Find the repeated integers}
+    \end{algorithm}
+
+    The time complexity of this \alg{while loop} is $O(n)$ and the time complexity of
+    \alg{Quick-Sort} is $O(n \log n)$. Therefore, the time complexity of this algorithm
+    is $O(n \log n)$.
+    \\
+
+    \pagebreak
+
+    \textbf{(2)} Describe the memory layout and the function for getting/putting values
+    from/to the matrix.
+    \\
+
+    \[
+    A_n = \bordermatrix{~      & 0       & 1       & 2       & \cdots & n - 2   & n - 1    \cr
+                        0      & a_{0,0} & 0       & 0       & \cdots & 0       & 0        \cr
+                        1      & a_{1,0} & a_{1,1} & 0       & \cdots & 0       & 0        \cr
+                        2      & a_{2,0} & a_{2,1} & a_{2,2} & \cdots & 0       & 0        \cr
+                        \vdots & \vdots  & \vdots  & \vdots  & \ddots & \vdots  & \vdots   \cr
+                        n - 2  & a_{n-2,0} & a_{n-2,1} & a_{n-2,2} & \cdots & a_{n-2,n-2} & 0        \cr
+                        n - 1  & a_{n-1,0} & a_{n-1,1} & a_{n-1,2} & \cdots & a_{n-1,n-2} & a_{n-1,n-1}  \cr}
+    \]
+
+
+
+    We store $a_{i,j}$ with a dense one-dimensional array B at the position of 
+    $B[(\sum\limits_{k=0}^i k) + j] = B[\frac{i(i+1)}{2} + j]$. 
+
+    \[
+        \bordermatrix{B[~]   & 0       & 1       & 2       & 3       & 4       & 5       & \cdots   \cr
+                      A      & a_{0,0} & a_{1,0} & a_{1,1} & a_{2,0} & a_{2,1} & a_{2,2} & \cdots   \cr}
+    \]
+
+    Functions below show how to input or output the value in this data structure. 
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{Get}{$B, row, col$}
+                \State{\Return{$B[\frac{row(row+1)}{2} + col]$}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Get the value from this matrix}
+    \end{algorithm}
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{Put}{$B, row, col, value$}
+                \State{$B[\frac{row(row+1)}{2} + col] \gets value$}
+                \State{\Return{}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Put the value in this matrix}
+    \end{algorithm}
+
+    \pagebreak
+
+    \textbf{(3)} Do Exercise C-3.22 of the textbook.
+    \\
+
+    Check the sizes of this two circularly linked list. If they are not in the same size,
+    they obviously do not contain the same list of nodes. If they are in the same size, 
+    find the same node first, then check for the rest of the nodes.
+    
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{Check-Two-Circularly-Linked-Lists}{$L,M$}
+                \If{$Lsize$ is equal to $Msize$}
+                    \State{$i \gets 0$}
+                    \While{$i \neq Lsize$}
+                        \If{$LCursorElem$ is equal to $MCursorElem$}
+                            \If{$the~rest~of~nodes~are~the~same$}
+                                \If{$n \neq 0$}
+                                    \State{\Return{true}}
+                                \EndIf
+                            \EndIf
+                            \State{$LCursor \gets LCursorNext$}
+                        \EndIf
+                        \State{$i \gets i + 1$}
+                    \EndWhile
+                \EndIf
+                \State{\Return{false}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Check whether the two circularly linked lists are same or not}
+    \end{algorithm}
+
+    The time complexity of this algorithm is $O(n^2)$ since it also need a loop to check
+    whether the rest of nodes are the same. Note that \alg{if $n \neq 0$} is to prevent
+    the situation that they contain the same starting points.
+    \\
+
+    \pagebreak
+
+    \textbf{(4)} Do Exercise C-3.18 of the textbook using either C/C++ or pseudo code.
+
+    \begin{lstlisting}[caption=Rearrange integer array by recursion.]
+    void swap(int *a, int *b)
+    {
+        int tmp = *a;
+        *a = *b;
+        *b = tmp;
+        return;
+    }
+
+    void rearrage(int *array, int start, int end)
+    {
+        while (array[start] % 2 == 0) { start++; }
+        while (array[end] % 2 != 0) { end--; }
+
+        if (start >= end) return;
+
+        swap(&array[start], &array[end]);
+        rearrage(array, start, end);
+
+        return;
+    }
+    \end{lstlisting}
+
+    \textbf{(5)} Do Exercise C-3.18 of the textbook, but use one single loop instead of 
+    recursion.
+
+    \begin{lstlisting}[caption=Rearrange integer array by one single loop]
+    void rearrage(int *array, int start, int end)
+    {
+        while (start < end)
+        {
+            if (array[start] % 2 != 0)
+            {
+                if (array[end] % 2 == 0)
+                {
+                    swap(&array[start], &array[end]);
+                    start++;
+                    end--;
+                }
+                else { end--; }
+            }
+            else { start++; }
+        }
+        return;
+    }
+    \end{lstlisting}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}{Asymptotic Complexity}
+    \textbf{(1)} Do Exercise R-4.24 of the textbook, under the assumption that both
+    $d(n) - e(n) \geq 0$ and $f(n) - g(n) \geq 0$.
+    \\
+
+    Consider $d(n) = 2n^2$ and $e(n) = n^2$. Note that both $d(n)$ and $e(n)$ are $O(n^2)$,
+    $d(n) - e(n) \geq 0$, and $f(n) - g(n) = n^2 - n^2 = 0 \geq 0$
+
+    \[
+        \begin{split}
+            d(n) - e(n) &= n^2
+            \\
+            f(n) - g(n) &= 0
+        \end{split}
+    \]
+
+    We can easily find that $d(n) - e(n)$ is $O(n^2)$ not $O(f(n) - g(n))$. 
+    \\
+
+    Consider another case, $d(n) = 2n^3$ and $e(n) = n^2$. Note that $d(n)$ is $O(n^3)$
+    , $e(n)$ is $O(n^2)$, $d(n) - e(n) \geq 0$, and $f(n) - g(n) \geq 0$
+
+    \[
+        \begin{split}
+            d(n) - e(n) &= 2n^3 - n^2
+            \\
+            f(n) - g(n) &= n^3 - n^2
+        \end{split}
+    \]
+
+    We can easily find that $d(n) - e(n)$ is $O(n^3)$, which is also $O(f(n) - g(n))$.
+    \\
+
+    Thus, We can conclude that $d(n) - e(n)$ is not necessarily $O(f(n) - g(n))$.
+    \\
+
+    \textbf{(2)} Do Exercise R-4.29 of the textbook.
+    \\
+
+    By the big-Oh definition, we need to find a real constant $c > 0$ and
+    an integer constant $n_{0} \geq 1$ such that $(n + 1)^5 \leq cn^5$ for every 
+    integer $n \geq n_{0}$. Take $n_{0} = 1$, for every $n \geq n_{0}$, we have
+
+    \[
+        \begin{split}
+            (n + 1)^5 &= 
+            \\
+            &= n^5 + 5n^4 + 10n^3 + 10n^2 + 5n^1 + 1
+            \\
+            &\leq 10n^5 + 10n^5 + 10n^5 + 10n^5 + 10n^5
+            \\
+            &= 50n^5
+        \end{split}
+    \]
+
+    A possible choice is $c = 50$ and $n_{0} = 1$. Thus, we conclude that $(n + 1)^5$
+    is $O(n^5)$.
+    \\
+
+    \textbf{(3)} Do Exercise R-4.39 of the textbook.
+    \\
+
+    Consider $f(n) = n \log n + 97.5n$ and $g(n) = n^2$. Note that $f(n)$ is $O(n\log n)$,
+    and $g(n)$ is $O(n^2)$. For every integer \(n\), \(1 \leq n \leq 97\) we can easily
+    find that 
+
+    \[
+        \begin{split}
+            f(n) &=
+            \\
+            &= n \log n + 97.5n
+            \\
+            &= n \cdot (\log n + 97.5)
+            \\
+            &> n \cdot 97.5
+            \\
+            &> n^2
+            \\
+            &= g(n)
+        \end{split}
+    \]
+
+    \pagebreak
+
+    When $n = 98$,
+
+    \[
+        \begin{split}
+            f(98) &= 98 \cdot (\log 98 + 97.5)
+            \\
+            &> 98 \cdot (0.5 + 97.5)
+            \\
+            &= 98^2
+            \\
+            &= g(98)
+        \end{split}
+    \]
+
+    When $n = 99$,
+
+    \[
+        \begin{split}
+            f(99) &= 99 \cdot (\log 99 + 97.5)
+            \\
+            &> 99 \cdot (1.5 + 97.5)
+            \\
+            &= 99^2
+            \\
+            &= g(99)
+        \end{split}
+    \]
+
+    When $n \geq 100$,
+
+    \[
+        \begin{split}
+            f(n) &=
+            \\
+            &= n \log n + 97.5n
+            \\
+            &= n \cdot (\log n + 97.5)
+            \\
+            &< n^2
+            \\
+            &= g(n)
+        \end{split}
+    \]
+
+    We found the possible functions satisfying the statements from question. There is 
+    $97.5n$ in $f(n)$, which isn't negligible when $n < 100$. When $n$ is getting larger,
+    this term would become negligible. Therefore, A1 and Bob find the result that
+    $n < 100$, the $O(n^2)$-time algorithm runs faster, and when $n \geq 100$ is the
+    $O(n \log n)$-time one better.
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}{Playing with Big Data}
+
+    \textbf{(1)} Describe your design of the data structure. 
+    Emphasize on why you think the data structure would be (time-wise) efficient 
+    for the four desired actions.
+    \\
+
+    I use Data Structure 2 from HW2 Hints. I create two 2-D Array.  \\
+    First Array for \alg{Get}, \alg{Clicked}, \alg{impressed},
+    \begin{center}
+        \begin{tabular}{ | l | l |}
+            \hline
+            UserID & vector$<$data$>$\\ \hline
+            0 & data with u = 0... \\ \hline
+            1 & data with u = 1... \\ \hline
+            \vdots & \vdots \\ \hline
+            23907634 & data with u = 23907634... \\ 
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Second Array for \alg{Profit}, 
+
+    \begin{center}
+        \begin{tabular}{ | l | l |}
+            \hline
+            AdID & vector$<$data$>$ (Click, Impression, UserID)\\ \hline
+            0 & data with a = 0... \\ \hline
+            1 & data with a = 1... \\ \hline
+            \vdots & \vdots \\ \hline
+           22238287& data with a = 22238287... \\ 
+            \hline
+        \end{tabular}
+    \end{center}
+
+\end{homeworkProblem}
+
+\end{document}
