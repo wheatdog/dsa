@@ -1,0 +1,27 @@
+以下為 kddcup2012track2.txt 每個資料的最大值
+Click = 39900
+Impression = 764404
+DisplayURL = 18445899849997222722
+AdID = 22238277
+AdvertiserID = 39191
+Depth = 3
+Position = 3
+QueryID = 26243605
+KeywordID = 1249783
+TitleID = 4051439
+DescriptionID = 3171828
+UserID = 23907634
+
+同場加映最小值：
+Click = 0
+Impression = 1
+DisplayURL = 482436910553333
+AdID = 1000031
+AdvertiserID = 78
+Depth = 1
+Position = 1
+QueryID = 0
+KeywordID = 0
+TitleID = 0
+DescriptionID = 0
+UserID = 0
