@@ -1,3 +1,4 @@
+include ../../dep/push.make
 
 all: demo
 
@@ -6,4 +7,5 @@ demo: demo.cpp
 
 upload:
 	scp -r demo.cpp b03902028@linux7.csie.ntu.edu.tw:dsa/hw2/code/
+
 
