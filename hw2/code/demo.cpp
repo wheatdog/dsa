@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-#define MAXLINE 149639107
+#define MAXLINE 149639117
 #define MAXUSER 23907637
 #define MAXADID 22238287
 
@@ -90,22 +90,22 @@ bool CompareByADAKTD(UAKTD const &i, UAKTD const &j)
         return false;
 }
 
-bool CompareByADAKTDI(RawData const &i, RawData const &j) 
+bool CompareByADAKTDI(RawData* const &i, RawData* const &j) 
 {
-    if (i.AdID != j.AdID)
-        return (i.AdID < j.AdID);
-    else if (i.Impression != j.Impression)
-        return (i.Impression > j.Impression);
-    else if (i.DisplayURL != j.DisplayURL)
-        return (i.DisplayURL < j.DisplayURL);
-    else if (i.AdvertiserID != j.AdvertiserID)
-        return (i.AdvertiserID < j.AdvertiserID);
-    else if (i.KeywordID != j.KeywordID)
-        return (i.KeywordID < j.KeywordID);
-    else if (i.TitleID != j.TitleID)
-        return (i.TitleID < j.TitleID);
-    else if (i.DescriptionID != j.DescriptionID)
-        return (i.DescriptionID < j.DescriptionID);
+    if (i->AdID != j->AdID)
+        return (i->AdID < j->AdID);
+    else if (i->Impression != j->Impression)
+        return (i->Impression > j->Impression);
+    else if (i->DisplayURL != j->DisplayURL)
+        return (i->DisplayURL < j->DisplayURL);
+    else if (i->AdvertiserID != j->AdvertiserID)
+        return (i->AdvertiserID < j->AdvertiserID);
+    else if (i->KeywordID != j->KeywordID)
+        return (i->KeywordID < j->KeywordID);
+    else if (i->TitleID != j->TitleID)
+        return (i->TitleID < j->TitleID);
+    else if (i->DescriptionID != j->DescriptionID)
+        return (i->DescriptionID < j->DescriptionID);
     else
         return false;
 }
@@ -210,7 +210,7 @@ void Profit(vector<ProfitData> *PData)
 
 
 
-void Impressed(vector<RawData> *Data)
+void Impressed(vector<RawData*> *Data)
 {
     int AUserID, BUserID;
     cin >> AUserID >> BUserID;
@@ -218,20 +218,20 @@ void Impressed(vector<RawData> *Data)
     sort(Data[AUserID].begin(), Data[AUserID].end(), CompareByADAKTDI);
     sort(Data[BUserID].begin(), Data[BUserID].end(), CompareByADAKTDI);
 
-    vector<RawData>::iterator a = Data[AUserID].begin();
-    vector<RawData>::iterator b = Data[BUserID].begin();
+    vector<RawData*>::iterator a = Data[AUserID].begin();
+    vector<RawData*>::iterator b = Data[BUserID].begin();
 
     vector<int> AdList;
     while (a != Data[AUserID].end() && b!= Data[BUserID].end())
     {
-        if (a->AdID < b->AdID)
+        if ((*a)->AdID < (*b)->AdID)
             a++;
-        else if (a->AdID > b->AdID)
+        else if ((*a)->AdID > (*b)->AdID)
             b++;
-        else if (a->AdID == b->AdID)
+        else if ((*a)->AdID == (*b)->AdID)
         {
-            if (a->Impression != 0 && b->Impression != 0)
-                AdList.push_back(a->AdID);
+            if ((*a)->Impression != 0 && (*b)->Impression != 0)
+                AdList.push_back((*a)->AdID);
             a++;
             b++;
         }
@@ -246,7 +246,7 @@ void Impressed(vector<RawData> *Data)
     a = Data[AUserID].begin();
     while (a != Data[AUserID].end())
     {
-        if (a->AdID > AdList.back())
+        if ((*a)->AdID > AdList.back())
             break;
         
         int Found = 0;
@@ -254,18 +254,18 @@ void Impressed(vector<RawData> *Data)
                 i != AdList.end() && !Found;
                 ++i)
         {
-            if (a->AdID == *i)
+            if ((*a)->AdID == *i)
                 Found = 1;
         }
         if (Found)
         {
             UAKTD u;
-            u.AdID = a->AdID;
-            u.DisplayURL = a->DisplayURL;
-            u.AdvertiserID = a->AdvertiserID;
-            u.KeywordID = a->KeywordID;
-            u.TitleID = a->TitleID;
-            u.DescriptionID = a->DescriptionID;
+            u.AdID = (*a)->AdID;
+            u.DisplayURL = (*a)->DisplayURL;
+            u.AdvertiserID = (*a)->AdvertiserID;
+            u.KeywordID = (*a)->KeywordID;
+            u.TitleID = (*a)->TitleID;
+            u.DescriptionID = (*a)->DescriptionID;
 
             OutputList.push_back(u);
         }
@@ -276,7 +276,7 @@ void Impressed(vector<RawData> *Data)
     b = Data[BUserID].begin();
     while (b != Data[AUserID].end())
     {
-        if (b->AdID > AdList.back())
+        if ((*b)->AdID > AdList.back())
             break;
         
         int Found = 0;
@@ -284,19 +284,19 @@ void Impressed(vector<RawData> *Data)
                 i != AdList.end() && !Found;
                 ++i)
         {
-            if (b->AdID == *i)
+            if ((*b)->AdID == *i)
                 Found = 1;
         }
 
         if (Found)
         {
             UAKTD u;
-            u.AdID = b->AdID;
-            u.DisplayURL = b->DisplayURL;
-            u.AdvertiserID = b->AdvertiserID;
-            u.KeywordID = b->KeywordID;
-            u.TitleID = b->TitleID;
-            u.DescriptionID = b->DescriptionID;
+            u.AdID = (*b)->AdID;
+            u.DisplayURL = (*b)->DisplayURL;
+            u.AdvertiserID = (*b)->AdvertiserID;
+            u.KeywordID = (*b)->KeywordID;
+            u.TitleID = (*b)->TitleID;
+            u.DescriptionID = (*b)->DescriptionID;
 
             OutputList.push_back(u);
         }
@@ -327,30 +327,30 @@ void Impressed(vector<RawData> *Data)
     return;
 }
 
-void Clicked(vector<RawData> *Data)
+void Clicked(vector<RawData*> *Data)
 {
     int UserID;
     vector<AdID_QueryID> old;
     cin >> UserID;
-    for (vector<RawData>::iterator i = Data[UserID].begin();
+    for (vector<RawData*>::iterator i = Data[UserID].begin();
             i != Data[UserID].end();
             ++i)
     {
-        if (i->Click == 0)
+        if ((*i)->Click == 0)
             continue;
         int Found = 0;
         for (vector<AdID_QueryID>::iterator j = old.begin();
                 j != old.end() && !Found;
                 ++j)
         {
-            if (j->AdID == i->AdID && j->QueryID == i->QueryID)
+            if (j->AdID == (*i)->AdID && j->QueryID == (*i)->QueryID)
                 Found = 1;
         }
         if (!Found)
         {
             AdID_QueryID New;
-            New.AdID = i->AdID;
-            New.QueryID = i->QueryID;
+            New.AdID = (*i)->AdID;
+            New.QueryID = (*i)->QueryID;
             old.push_back(New);
         }
     }
@@ -367,7 +367,7 @@ void Clicked(vector<RawData> *Data)
     return;
 }
 
-void Get(vector<RawData> *Data)
+void Get(vector<RawData*> *Data)
 {
     int UserID, AdID, QueryID, Position, Depth;
     cin >> UserID 
@@ -376,15 +376,15 @@ void Get(vector<RawData> *Data)
         >> Position 
         >> Depth;
     int TotalClick = 0, TotalImpression = 0;
-    for (vector<RawData>::iterator i = Data[UserID].begin();
+    for (vector<RawData*>::iterator i = Data[UserID].begin();
             i != Data[UserID].end();
             ++i)
     {
-        if (AdID != i->AdID || QueryID != i->QueryID ||
-                Position != i->Position || Depth != i->Depth)
+        if (AdID != (*i)->AdID || QueryID != (*i)->QueryID ||
+                Position != (*i)->Position || Depth != (*i)->Depth)
             continue;
-        TotalClick += i->Click;
-        TotalImpression += i->Impression;
+        TotalClick += (*i)->Click;
+        TotalImpression += (*i)->Impression;
     }
     cout << TotalClick << " " << TotalImpression << endl;
     return;
@@ -407,23 +407,25 @@ int main(int argc, char* argv[])
     ifstream fin;
     fin.open(argv[1]);
 
-    vector<RawData> *Data = new vector<RawData>[MAXUSER];
+    RawData *Raw = new RawData[MAXLINE];
+
+    vector<RawData*> *Data = new vector<RawData*>[MAXUSER];
     vector<ProfitData> *PData = new vector<ProfitData>[MAXADID];
 
-
-    RawData Buffer;
     ProfitData PBuffer;
     int UserID;
-    while (fin >> Buffer)
+    int LineCount = 0;
+    while (fin >> Raw[LineCount])
     {
         fin >> UserID;
 
-        PBuffer.Click = Buffer.Click;
-        PBuffer.Impression = Buffer.Impression;
+        PBuffer.Click = Raw[LineCount].Click;
+        PBuffer.Impression = Raw[LineCount].Impression;
         PBuffer.UserID = UserID;
 
-        Data[UserID].push_back(Buffer);
-        PData[Buffer.AdID].push_back(PBuffer);
+        Data[UserID].push_back(Raw + LineCount);
+        PData[Raw[LineCount].AdID].push_back(PBuffer);
+        LineCount++;
     }
 
     fin.close();
@@ -465,4 +467,5 @@ int main(int argc, char* argv[])
 
     delete [] Data;
     delete [] PData;
+    delete [] Raw;
 }
