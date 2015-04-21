@@ -10,7 +10,10 @@
 \usepackage{algpseudocode}
 \usepackage{listings}
 \usepackage{lastpage}
+\usepackage{color}
+\usepackage{tikz}
 
+\usetikzlibrary{shapes,positioning,arrows,calc}
 \usetikzlibrary{automata,positioning}
 
 %
@@ -37,31 +40,7 @@
 \renewcommand\footrulewidth{0.4pt}
 
 \setlength\parindent{0pt}
-
-%
-% Homework Details
-%   - Title
-%   - Due date
-%   - University
-%   - Class
-%   - Class Alias
-%   - Class Section
-%   - Instructor
-%   - Author
-%   - AuthorID
-%
-
-\newcommand{\hmwkID}{2}
-\newcommand{\hmwkTitle}{Homework\ \#\hmwkID}
-\newcommand{\hmwkDueDate}{April 14, 2015 at 16:20}
-\newcommand{\hmwkUniversity}{NTU}
-\newcommand{\hmwkClass}{Data Structures and Algorithms}
-\newcommand{\hmwkClassAlias}{DSA}
-\newcommand{\hmwkClassSection}{Spring 2015}
-\newcommand{\hmwkClassInstructor}{Hsuan-Tien Lin, Roger Jang}
-\newcommand{\hmwkAuthorName}{Tim Liou}
-\newcommand{\hmwkAuthorID}{b03902028}
-
+\setlength{\parskip}{1em}
 %
 % Create Problem Sections
 %
@@ -133,8 +112,21 @@
 % Various Helper Commands
 %
 
+\newcommand{\subqest}[1]{\textbf{(\arabic{partCounter})} #1 \stepcounter{partCounter} \par}
+
 % Something need to be done
-\newcommand{\pending}{~~~~\textbf{\large ====== Pending ======}}
+\newcommand{\pending}[1][]{~~~~\textcolor{red}{ 
+        \textbf{ \large ====== Pending 
+            \ifx&#1&%
+            % #1 is empty
+            \else
+            % #1 is nonempty
+            \large (#1)
+            \fi
+            \large ====== 
+        } 
+    }
+}
 
 % Useful for algorithms
 \newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
