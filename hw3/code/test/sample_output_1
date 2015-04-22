@@ -1,0 +1,52 @@
+# transform from indix to postfix
+encounter (: push to stack
+	current output: 
+	current stack: (, 
+encounter 3: push to output
+	current output: 3, 
+	current stack: (, 
+encounter +: push to stack
+	current output: 3, 
+	current stack: (, +, 
+encounter 2: push to output
+	current output: 3, 2, 
+	current stack: (, +, 
+encounter ): flush the stack to output until meeting '('
+	current output: 3, 2, +, 
+	current stack: 
+encounter *: push to stack
+	current output: 3, 2, +, 
+	current stack: *, 
+encounter (: push to stack
+	curernt output: 3, 2, +, 
+	current stack: *, (, 
+encounter 5: push to output
+	current output: 3, 2, +, 5, 
+	current stack: *, (, 
+encounter &: push to stack
+	current output: 3, 2, +, 5, 
+	current stack: *, (, &, 
+encounter 7: push to output
+	current output: 3, 2, +, 5, 7, 
+	current stack: *, (, &, 
+encounter ): flush the stack to output until meeting '('
+	current output: 3, 2, +, 5, 7, &, 
+	current stack: *, 
+encounter -: push to stack
+	*** stack.top() has greater precedence ***
+	current output: 3, 2, +, 5, 7, &, *, 
+	current stack: -, 
+encounter 7: push to output
+	current output: 3, 2, +, 5, 7, &, *, 7, 
+	current stack: -, 
+encounter *: push to stack
+	current output: 3, 2, +, 5, 7, &, *, 7, 
+	current stack: -, *, 
+encounter 7: push to output
+	current output: 3, 2, +, 5, 7, &, *, 7, 7, 
+	current stack: -, *, 
+encounter NOTHING: flush the stack to output
+	current output: 3, 2, +, 5, 7, &, *, 7, 7, *, -, 
+# postfix expression transforming complete
+Postfix Exp: 3 2 + 5 7 & * 7 7 * -
+RESULT: -24

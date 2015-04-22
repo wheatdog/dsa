@@ -1,0 +1,6 @@
+Postfix Exp: 37.180000 6.760000 / 3.141592 * sin 3.500000 + sqrt + fabs -
+RESULT: -0.870829
+Postfix Exp: 5.000000 2.000000 log exp pow
+RESULT: 25.000000
+Postfix Exp: 7.000000 7.000000 +
+RESULT: 14.000000
