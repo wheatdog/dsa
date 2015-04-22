@@ -327,7 +327,7 @@ int main()
         double Result = Calulate(PostfixExpress);
 
         ShowPostfix(PostfixExpress, "Postfix Exp:");
-        printf("Result: %.6f\n", Result);
+        printf("RESULT: %.6f\n", Result);
 
         PostfixExpress.clear();
     }

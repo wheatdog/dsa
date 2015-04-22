@@ -348,7 +348,7 @@ int main()
         int Result = Calulate(PostfixExpress);
 
         ShowPostfix(PostfixExpress, "Postfix Exp:");
-        cout << "Result: " << Result << endl;
+        cout << "RESULT: " << Result << endl;
 
         PostfixExpress.clear();
     }
