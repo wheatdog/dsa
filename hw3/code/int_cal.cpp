@@ -108,7 +108,7 @@ void ToPostfix(string& Express, vector<string>& PostfixExpress)
 {
     string Buf;
     stack<string> Operators;
-    int WasOperator = 0;
+    int WasOperator = 1;
 
     // NOTE: The end of express
     Express.push_back('@');
@@ -238,7 +238,6 @@ void DetermineOperands(stack<int>& NumStack, int& First, int& Second)
     NumStack.pop();
     return;
 }
-
 
 int Calulate(vector<string>& PostfixExpress)
 {
