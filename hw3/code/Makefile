@@ -1,7 +1,7 @@
 CPPFLAGS = -O2 -std=c++11 -Wall
 CPPC = g++
 
-all: int_cal sci_cal
+all: 3_4_1.out 3_4_2.out
 
 %: %.c
 	gcc $(CFLAGS) $< -o $@
@@ -9,16 +9,16 @@ all: int_cal sci_cal
 %: %.cpp
 	g++ $(CPPFLAGS) $< -o $@
 
-int_cal: int_cal.cpp
+3_4_1.out: int_cal.cpp
 	$(CPPC) $(CPPFLAGS) $< -o $@
 
-sci_cal: sci_cal.cpp
+3_4_2.out: sci_cal.cpp
 	$(CPPC) $(CPPFLAGS) $< -o $@
 
 run1: 
-	@./int_cal
+	@./3_4_1.out
 
 run2: 
-	@./sci_cal
+	@./3_4_2.out
 
 include ../../dep/push.make
