@@ -394,8 +394,95 @@
     (with push, pop and isempty operations but no others) to simulate one deque
     (for push/pop front and push/pop back operations).
     What is the total running time after N operations?}
-    \pending
 
+    Imagine we divide a deque into two stacks named $S_f$ and $S_b$. \alg{PushFront}, 
+    \alg{PopFront} are processed in $S_f$ while \alg{PushBack}, \alg{PopBack} are
+    processed in $S_b$. However, we need to transport elements from a stack to the other
+    one if we want to \alg{Pop} elements from an empty stack. Note that both stacks
+    are empty means the deque is empty.
+
+    \begin{figure}[h!]
+        \centering
+        \begin{tikzpicture}
+            \node[anchor=center] at (2,1) {$S_f$};
+            \draw (0,0) -- (4,0) -- (4,2) -- (0,2) ;
+            \node[anchor=center] at (7,1) {$S_b$};
+            \draw (9,0) -- (5,0) -- (5,2) -- (9,2) ;
+            \draw (0,3) -- (9,3) -- (9,4) -- (0,4) -- (0,3);
+            \node[anchor=center] at (4.5,3.5) {$deque$};
+        \end{tikzpicture}
+        \caption{Use two stacks to simulate a deque}
+    \end{figure}
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{PopFront}{}
+            \If{\emph{$S_f$ and $S_b$ aren't both empty}}
+                \If{\emph{$S_f$ is empty}}
+                    \State{\emph{pop all elements from $S_b$ to $S_f$}}
+                \EndIf
+                \State{\emph{pop from $S_f$}}
+            \EndIf
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{PopFront of deque using two stacks}
+    \end{algorithm}
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{PopBack}{}
+            \If{\emph{$S_f$ and $S_b$ aren't both empty}}
+                \If{\emph{$S_b$ is empty}}
+                    \State{\emph{pop all elements from $S_f$ to $S_b$}}
+                \EndIf
+                \State{\emph{pop from $S_b$}}
+            \EndIf
+            \EndFunction{}
+
+        \end{algorithmic}
+        \caption{PopBack of deque using two stacks}
+    \end{algorithm}
+
+    \pagebreak
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{PushFront}{$e$}
+                \State{\emph{push e into $S_f$}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{PushFront}
+    \end{algorithm}
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{PushBack}{$e$}
+                \State{\emph{push e into $S_b$}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{PushBack}
+    \end{algorithm}
+
+    Suppose \alg{Pop}/\alg{Push} both take $t$ (Time Unit).
+    There are some cases result in different running time.
+    \begin{description}
+    \item[Case 1:] all the operations are either \alg{PushBack} or \alg{PushFront} \\
+        Since these two operations are just a \alg{Push} operation for a stack, the 
+        time complexity is constant. After N operation, the total running time is 
+        simply $Nt$.
+    \item[Case 2:] operations contain \alg{PopBack} or \alg{PopFront}, but never make
+        any stack empty \\
+        Like Case 1, all the opertations are just \alg{Push} or \alg{Pop} for a stack.
+        Therefore, the total running time is also $Nt$.
+    \item[Case 3:] operations contain \alg{PopBack} or \alg{PopFront}, and try to \alg{Pop}
+        from an empty stack \\
+        In this stituation, it would \alg{Pop} all elements from the other stack to its 
+        first then \alg{Pop} the desired elements. Suppose this stituation happened $k$
+        times. We denote the number of elements from the other stack in the $i$th time $a_i$.
+        The total time is $N + \sum\limits_{i=1}^k a_i $
+
+    \end{description}
+
+
+    \pagebreak
+    
     \subqest{Do Exercise C-5.9 of the textbook, but with three stacks instead of two stacks and 
     one deque.}
     Suppose three stacks are big enough for all elements.
@@ -494,6 +581,351 @@
 \end{homeworkProblem}
 
 \begin{homeworkProblem}{Calculators}
+    \subqest{Three test case of integer calculator}
+
+    \begin{lstlisting}[breaklines=true]
+    Input:
+
+    123+2*3*(5-3+48/2) + 34
+    -~((1024 >> (23 % 3)) + !0)
+    ((3 && +1 || 1) ^ 12 << 1 ) & 16 | 2
+    ---
+    Output:
+
+    --- postfix expression transforming ---
+    encounter 123: push to output
+            current output: 123
+    encounter +: push to the stack directly
+            current output: 123
+            current stack:  +
+    encounter 2: push to output
+            current output: 123 2
+            current stack:  +
+    encounter *: push to the stack directly
+            current output: 123 2
+            current stack:  + *
+    encounter 3: push to output
+            current output: 123 2 3
+            current stack:  + *
+    encounter *: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 123 2 3 *
+            current stack:  + *
+    encounter (: push to the stack directly
+            current output: 123 2 3 *
+            current stack:  + * (
+    encounter 5: push to output
+            current output: 123 2 3 * 5
+            current stack:  + * (
+    encounter -: push to the stack directly
+            current output: 123 2 3 * 5
+            current stack:  + * ( -
+    encounter 3: push to output
+            current output: 123 2 3 * 5 3
+            current stack:  + * ( -
+    encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 123 2 3 * 5 3 -
+            current stack:  + * ( +
+    encounter 48: push to output
+            current output: 123 2 3 * 5 3 - 48
+            current stack:  + * ( +
+    encounter /: push to the stack directly
+            current output: 123 2 3 * 5 3 - 48
+            current stack:  + * ( + /
+    encounter 2: push to output
+            current output: 123 2 3 * 5 3 - 48 2
+            current stack:  + * ( + /
+    encounter ): flush the stack to output until meeting '('
+            current output: 123 2 3 * 5 3 - 48 2 / +
+            current stack:  + *
+    encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 123 2 3 * 5 3 - 48 2 / + * +
+            current stack:  +
+    encounter 34: push to output
+            current output: 123 2 3 * 5 3 - 48 2 / + * + 34
+            current stack:  +
+    encounter NOTHING: flush the stack to output
+            current output: 123 2 3 * 5 3 - 48 2 / + * + 34 +
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 123 2 3 * 5 3 - 48 2 / + * + 34 +
+    RESULT: 313
+    --- postfix expression transforming ---
+    encounter U-: push to the stack directly
+            current output:
+            current stack:  -
+    encounter ~: push to the stack directly
+            current output:
+            current stack:  - ~
+    encounter (: push to the stack directly
+            current output:
+            current stack:  - ~ (
+    encounter (: push to the stack directly
+            current output:
+            current stack:  - ~ ( (
+    encounter 1024: push to output
+            current output: 1024
+            current stack:  - ~ ( (
+    encounter >>: push to the stack directly
+            current output: 1024
+            current stack:  - ~ ( ( >>
+    encounter (: push to the stack directly
+            current output: 1024
+            current stack:  - ~ ( ( >> (
+    encounter 23: push to output
+            current output: 1024 23
+            current stack:  - ~ ( ( >> (
+    encounter %: push to the stack directly
+            current output: 1024 23
+            current stack:  - ~ ( ( >> ( %
+    encounter 3: push to output
+            current output: 1024 23 3
+            current stack:  - ~ ( ( >> ( %
+    encounter ): flush the stack to output until meeting '('
+            current output: 1024 23 3 %
+            current stack:  - ~ ( ( >>
+    encounter ): flush the stack to output until meeting '('
+            current output: 1024 23 3 % >>
+            current stack:  - ~ (
+    encounter +: push to the stack directly
+            current output: 1024 23 3 % >>
+            current stack:  - ~ ( +
+    encounter !: push to the stack directly
+            current output: 1024 23 3 % >>
+            current stack:  - ~ ( + !
+    encounter 0: push to output
+            current output: 1024 23 3 % >> 0
+            current stack:  - ~ ( + !
+    encounter ): flush the stack to output until meeting '('
+            current output: 1024 23 3 % >> 0 ! +
+            current stack:  - ~
+    encounter NOTHING: flush the stack to output
+            current output: 1024 23 3 % >> 0 ! + ~ -
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 1024 23 3 % >> 0 ! + ~ -
+    RESULT: 258
+    --- postfix expression transforming ---
+    encounter (: push to the stack directly
+            current output:
+            current stack:  (
+    encounter (: push to the stack directly
+            current output:
+            current stack:  ( (
+    encounter 3: push to output
+            current output: 3
+            current stack:  ( (
+    encounter &&: push to the stack directly
+            current output: 3
+            current stack:  ( ( &&
+    encounter U+: push to the stack directly
+            current output: 3
+            current stack:  ( ( && +
+    encounter 1: push to output
+            current output: 3 1
+            current stack:  ( ( && +
+    encounter ||: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 3 1 + &&
+            current stack:  ( ( ||
+    encounter 1: push to output
+            current output: 3 1 + && 1
+            current stack:  ( ( ||
+    encounter ): flush the stack to output until meeting '('
+            current output: 3 1 + && 1 ||
+            current stack:  (
+    encounter ^: push to the stack directly
+            current output: 3 1 + && 1 ||
+            current stack:  ( ^
+    encounter 12: push to output
+            current output: 3 1 + && 1 || 12
+            current stack:  ( ^
+    encounter <<: push to the stack directly
+            current output: 3 1 + && 1 || 12
+            current stack:  ( ^ <<
+    encounter 1: push to output
+            current output: 3 1 + && 1 || 12 1
+            current stack:  ( ^ <<
+    encounter ): flush the stack to output until meeting '('
+            current output: 3 1 + && 1 || 12 1 << ^
+    encounter &: push to the stack directly
+            current output: 3 1 + && 1 || 12 1 << ^
+            current stack:  &
+    encounter 16: push to output
+            current output: 3 1 + && 1 || 12 1 << ^ 16
+            current stack:  &
+    encounter |: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 3 1 + && 1 || 12 1 << ^ 16 &
+            current stack:  |
+    encounter 2: push to output
+            current output: 3 1 + && 1 || 12 1 << ^ 16 & 2
+            current stack:  |
+    encounter NOTHING: flush the stack to output
+            current output: 3 1 + && 1 || 12 1 << ^ 16 & 2 |
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 3 1 + && 1 || 12 1 << ^ 16 & 2 |
+    RESULT: 18
+    \end{lstlisting}
+
+    \subqest{Three test case of scientific calculator}
+
+    \begin{lstlisting}[breaklines=true]
+    Input:
+
+    - pow( (2.3 + 3) *2 , exp( log(2) ) )
+    sqrt(1/16) + fabs(sin(3 / 2 * 3.1415926)) + +cos(3.1415926)
+    0.00 + 1.2
+    ---
+    Output:
+
+    --- postfix expression transforming ---
+    encounter U-: push to the stack directly
+            current output:
+            current stack:  -
+    encounter pow: push to the stack directly
+            current output:
+            current stack:  - pow
+    encounter (: push to the stack directly
+            current output:
+            current stack:  - pow (
+    encounter (: push to the stack directly
+            current output:
+            current stack:  - pow ( (
+    encounter 2.3: push to output
+            current output: 2.300000
+            current stack:  - pow ( (
+    encounter +: push to the stack directly
+            current output: 2.300000
+            current stack:  - pow ( ( +
+    encounter 3: push to output
+            current output: 2.300000 3.000000
+            current stack:  - pow ( ( +
+    encounter ): flush the stack to output until meeting '(' 
+            current output: 2.300000 3.000000 +
+            current stack:  - pow (
+    encounter *: push to the stack directly
+            current output: 2.300000 3.000000 +
+            current stack:  - pow ( *
+    encounter 2: push to output
+            current output: 2.300000 3.000000 + 2.000000
+            current stack:  - pow ( *
+    encounter exp: push to the stack directly
+            current output: 2.300000 3.000000 + 2.000000
+            current stack:  - pow ( * exp
+    encounter (: push to the stack directly
+            current output: 2.300000 3.000000 + 2.000000
+            current stack:  - pow ( * exp (
+    encounter log: push to the stack directly
+            current output: 2.300000 3.000000 + 2.000000
+            current stack:  - pow ( * exp ( log
+    encounter (: push to the stack directly
+            current output: 2.300000 3.000000 + 2.000000
+            current stack:  - pow ( * exp ( log (
+    encounter 2: push to output
+            current output: 2.300000 3.000000 + 2.000000 2.000000
+            current stack:  - pow ( * exp ( log (
+    encounter ): flush the stack to output until meeting '(' and pop function 'log' to output
+            current output: 2.300000 3.000000 + 2.000000 2.000000 log
+            current stack:  - pow ( * exp (
+    encounter ): flush the stack to output until meeting '(' and pop function 'exp' to output
+            current output: 2.300000 3.000000 + 2.000000 2.000000 log exp
+            current stack:  - pow ( *
+    encounter ): flush the stack to output until meeting '(' and pop function 'pow' to output
+            current output: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow
+            current stack:  -
+    encounter NOTHING: flush the stack to output
+            current output: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow -
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow -
+    RESULT: -789.048100
+    --- postfix expression transforming ---
+    encounter sqrt: push to the stack directly
+            current output:
+            current stack:  sqrt
+    encounter (: push to the stack directly
+            current output:
+            current stack:  sqrt (
+    encounter 1: push to output
+            current output: 1.000000
+            current stack:  sqrt (
+    encounter /: push to the stack directly
+            current output: 1.000000
+            current stack:  sqrt ( /
+    encounter 16: push to output
+            current output: 1.000000 16.000000
+            current stack:  sqrt ( /
+    encounter ): flush the stack to output until meeting '(' and pop function 'sqrt' to output
+            current output: 1.000000 16.000000 / sqrt
+    encounter +: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt
+            current stack:  +
+    encounter fabs: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt
+            current stack:  + fabs
+    encounter (: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt
+            current stack:  + fabs (
+    encounter sin: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt
+            current stack:  + fabs ( sin
+    encounter (: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt
+            current stack:  + fabs ( sin (
+    encounter 3: push to output
+            current output: 1.000000 16.000000 / sqrt 3.000000
+            current stack:  + fabs ( sin (
+    encounter /: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt 3.000000
+            current stack:  + fabs ( sin ( /
+    encounter 2: push to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000
+            current stack:  + fabs ( sin ( /
+    encounter *: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 /
+            current stack:  + fabs ( sin ( *
+    encounter 3.1415926: push to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593
+            current stack:  + fabs ( sin ( *
+    encounter ): flush the stack to output until meeting '(' and pop function 'sin' to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin
+            current stack:  + fabs (
+    encounter ): flush the stack to output until meeting '(' and pop function 'fabs' to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs
+            current stack:  +
+    encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+            current stack:  +
+    encounter U+: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+            current stack:  + +
+    encounter cos: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+            current stack:  + + cos
+    encounter (: push to the stack directly
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+            current stack:  + + cos (
+    encounter 3.1415926: push to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593
+            current stack:  + + cos (
+    encounter ): flush the stack to output until meeting '(' and pop function 'cos' to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos
+            current stack:  + +
+    encounter NOTHING: flush the stack to output
+            current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos + +
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos + +
+    RESULT: 0.250000
+    --- postfix expression transforming ---
+    encounter 0.00: push to output
+            current output: 0.000000
+    encounter +: push to the stack directly
+            current output: 0.000000
+            current stack:  +
+    encounter 1.2: push to output
+            current output: 0.000000 1.200000
+            current stack:  +
+    encounter NOTHING: flush the stack to output
+            current output: 0.000000 1.200000 +
+    --- postfix expression transforming complete :) ---
+    Postfix Exp: 0.000000 1.200000 +
+    RESULT: 1.200000
+    \end{lstlisting}
 
 \end{homeworkProblem}
 
