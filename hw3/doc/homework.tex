@@ -187,10 +187,10 @@
     \[
         \begin{split}
             &2n \leq \log_2 c + n~~for~n \geq n_0 \\
-            &\Rightarrow \log_2 c \geq n
+            &\Rightarrow n \leq \log_2 c 
         \end{split}
     \]
-    That is, take $n^{\prime} = max(n_0, \lceil \log_2 c + 1 \rceil)$
+    Take $n^{\prime} = max(n_0, \lceil \log_2 c + 1 \rceil)$
     \[
         \begin{split}
             n^{\prime} \geq n_0 &\Rightarrow 4^n \leq c 2^n \\
@@ -465,11 +465,11 @@
     \begin{description}
     \item[Case 1:] all the operations are either \alg{PushBack} or \alg{PushFront} \\
         Since these two operations are just a \alg{Push} operation for a stack, the 
-        time complexity is constant. After N operation, the total running time is 
+        time complexity is constant. After N operations, the total running time is 
         simply $Nt$.
     \item[Case 2:] operations contain \alg{PopBack} or \alg{PopFront}, but never make
         any stack empty \\
-        Like Case 1, all the opertations are just \alg{Push} or \alg{Pop} for a stack.
+        Like Case 1, each opertation is either \alg{Push} or \alg{Pop} for a stack.
         Therefore, the total running time is also $Nt$.
     \item[Case 3:] operations contain \alg{PopBack} or \alg{PopFront}, and try to \alg{Pop}
         from an empty stack \\
@@ -563,8 +563,8 @@
     Like textbook, we view the computer as a coin-operated appliance, which requires
     the payment of one \textbf{cyber-dollar} for a constant amount of computing time.
     Suppose it costs 6 cyber-dollars to push one element to a non-full array. In fact,
-    only one of them is used to insert a element, and the other five cyber-dollars just
-    store in the place. Consider a case that an array just extended its size from 
+    only one cyber-dollars is used to insert an element, and the other five are just
+    stored in the place. Consider a case that an array just extended its size from 
     $N$ to $N + \lceil \frac{N}{4} \rceil$. After pushing $\lceil \frac{N}{4} \rceil$ elements, 
     the array is full again. Note that we stored at least 
     $5 \times \lceil \frac{N}{4}\rceil$ cyber-dollars at this moment. Next time before
@@ -576,8 +576,8 @@
             &\geq N + \lceil \frac{N}{4}\rceil
         \end{split}
     \]
-    It means we can use the cyber-dollars we stored before to copy elements and
-    without running out of the money. That is, the real average cost of pushing a element 
+    It means we can use the cyber-dollars we stored before to copy elements without 
+    running out of the money. That is, the real average cost of pushing a element 
     to an array is less than 6 cyber-dollars. Therefore, it totally costs less than $6n$
     cyber-dollars after a sequence of $n$ push operations. This implies it still run in
     $O(n)$ in this case.
