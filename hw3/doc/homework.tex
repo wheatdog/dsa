@@ -475,8 +475,8 @@
         from an empty stack \\
         In this stituation, it would \alg{Pop} all elements from the other stack to its 
         first then \alg{Pop} the desired elements. Suppose this stituation happened $k$
-        times. We denote the number of elements from the other stack in the $i$th time $a_i$.
-        The total time is $N + \sum\limits_{i=1}^k a_i $
+        times, and there are $a_i$ elements in the other stack at the $i$th time.
+        The total time is $N + \sum\limits_{i=1}^k a_i $.
 
     \end{description}
 
@@ -556,9 +556,33 @@
 \end{homeworkProblem}
 
 
+\pagebreak
+
 \begin{homeworkProblem}{List, Iterator}
     \subqest{Do Exercise C-6.7 of the textbook.}
-    \pending
+    Like textbook, we view the computer as a coin-operated appliance, which requires
+    the payment of one \textbf{cyber-dollar} for a constant amount of computing time.
+    Suppose it costs 6 cyber-dollars to push one element to a non-full array. In fact,
+    only one of them is used to insert a element, and the other five cyber-dollars just
+    store in the place. Consider a case that an array just extended its size from 
+    $N$ to $N + \lceil \frac{N}{4} \rceil$. After pushing $\lceil \frac{N}{4} \rceil$ elements, 
+    the array is full again. Note that we stored at least 
+    $5 \times \lceil \frac{N}{4}\rceil$ cyber-dollars at this moment. Next time before
+    we push a new element, we would have to copy $N + \lceil \frac{N}{4} \rceil$
+    elements from old array to a new array. And we know that
+    \[
+        \begin{split}
+            5 \times \lceil \frac{N}{4}\rceil &= 4 \times \lceil \frac{N}{4}\rceil + \lceil \frac{N}{4}\rceil \\
+            &\geq N + \lceil \frac{N}{4}\rceil
+        \end{split}
+    \]
+    It means we can use the cyber-dollars we stored before to copy elements and
+    without running out of the money. That is, the real average cost of pushing a element 
+    to an array is less than 6 cyber-dollars. Therefore, it totally costs less than $6n$
+    cyber-dollars after a sequence of $n$ push operations. This implies it still run in
+    $O(n)$ in this case.
+
+    
 
     \subqest{Do Exercise C-6.13 of the textbook by Googling the \textit{Knuth Shuffle}.}
 
@@ -580,8 +604,11 @@
 
 \end{homeworkProblem}
 
+
+\pagebreak
+
 \begin{homeworkProblem}{Calculators}
-    \subqest{Three test case of integer calculator}
+    \subqest{Three cases for testing integer calculator}
 
     \begin{lstlisting}[breaklines=true]
     Input:
@@ -763,7 +790,7 @@
     RESULT: 18
     \end{lstlisting}
 
-    \subqest{Three test case of scientific calculator}
+    \subqest{Three cases for testing scientific calculator}
 
     \begin{lstlisting}[breaklines=true]
     Input:
