@@ -157,7 +157,7 @@ void ToPostfix(string& Express, vector<string>& PostfixExpress)
                     }
                     if (MessageFlag)
                     {
-                        cout << "stack.top() has greater precdence, after pop something out to output, then push to the stack" << endl;
+                        cout << "stack.top() has greater or the same precdence, after pop something out to output, then push to the stack" << endl;
                     }
                 }
 

@@ -11,5 +11,4 @@ push:
 	@for f in $(Files); do \
 	    echo $$f; \
 	done
-	
 

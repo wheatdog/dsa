@@ -16,9 +16,9 @@ all: 3_4_1.out 3_4_2.out
 	$(CPPC) $(CPPFLAGS) $< -o $@
 
 run1: 
-	@./3_4_1.out
+	@./3_4_1.out 
 
 run2: 
-	@./3_4_2.out
+	@./3_4_2.out 
 
 include ../../dep/push.make

@@ -1,0 +1,169 @@
+--- postfix expression transforming ---
+encounter 123: push to output
+	current output: 123
+encounter +: push to the stack directly
+	current output: 123
+	current stack:  +
+encounter 2: push to output
+	current output: 123 2
+	current stack:  +
+encounter *: push to the stack directly
+	current output: 123 2
+	current stack:  + *
+encounter 3: push to output
+	current output: 123 2 3
+	current stack:  + *
+encounter *: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 123 2 3 *
+	current stack:  + *
+encounter (: push to the stack directly
+	current output: 123 2 3 *
+	current stack:  + * (
+encounter 5: push to output
+	current output: 123 2 3 * 5
+	current stack:  + * (
+encounter -: push to the stack directly
+	current output: 123 2 3 * 5
+	current stack:  + * ( -
+encounter 3: push to output
+	current output: 123 2 3 * 5 3
+	current stack:  + * ( -
+encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 123 2 3 * 5 3 -
+	current stack:  + * ( +
+encounter 48: push to output
+	current output: 123 2 3 * 5 3 - 48
+	current stack:  + * ( +
+encounter /: push to the stack directly
+	current output: 123 2 3 * 5 3 - 48
+	current stack:  + * ( + /
+encounter 2: push to output
+	current output: 123 2 3 * 5 3 - 48 2
+	current stack:  + * ( + /
+encounter ): flush the stack to output until meeting '('
+	current output: 123 2 3 * 5 3 - 48 2 / +
+	current stack:  + *
+encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 123 2 3 * 5 3 - 48 2 / + * +
+	current stack:  +
+encounter 34: push to output
+	current output: 123 2 3 * 5 3 - 48 2 / + * + 34
+	current stack:  +
+encounter NOTHING: flush the stack to output
+	current output: 123 2 3 * 5 3 - 48 2 / + * + 34 +
+--- postfix expression transforming complete :) ---
+Postfix Exp: 123 2 3 * 5 3 - 48 2 / + * + 34 +
+RESULT: 313
+--- postfix expression transforming ---
+encounter U-: push to the stack directly
+	current output:
+	current stack:  -
+encounter ~: push to the stack directly
+	current output:
+	current stack:  - ~
+encounter (: push to the stack directly
+	current output:
+	current stack:  - ~ (
+encounter (: push to the stack directly
+	current output:
+	current stack:  - ~ ( (
+encounter 1024: push to output
+	current output: 1024
+	current stack:  - ~ ( (
+encounter >>: push to the stack directly
+	current output: 1024
+	current stack:  - ~ ( ( >>
+encounter (: push to the stack directly
+	current output: 1024
+	current stack:  - ~ ( ( >> (
+encounter 23: push to output
+	current output: 1024 23
+	current stack:  - ~ ( ( >> (
+encounter %: push to the stack directly
+	current output: 1024 23
+	current stack:  - ~ ( ( >> ( %
+encounter 3: push to output
+	current output: 1024 23 3
+	current stack:  - ~ ( ( >> ( %
+encounter ): flush the stack to output until meeting '('
+	current output: 1024 23 3 %
+	current stack:  - ~ ( ( >>
+encounter ): flush the stack to output until meeting '('
+	current output: 1024 23 3 % >>
+	current stack:  - ~ (
+encounter +: push to the stack directly
+	current output: 1024 23 3 % >>
+	current stack:  - ~ ( +
+encounter !: push to the stack directly
+	current output: 1024 23 3 % >>
+	current stack:  - ~ ( + !
+encounter 0: push to output
+	current output: 1024 23 3 % >> 0
+	current stack:  - ~ ( + !
+encounter ): flush the stack to output until meeting '('
+	current output: 1024 23 3 % >> 0 ! +
+	current stack:  - ~
+encounter NOTHING: flush the stack to output
+	current output: 1024 23 3 % >> 0 ! + ~ -
+--- postfix expression transforming complete :) ---
+Postfix Exp: 1024 23 3 % >> 0 ! + ~ -
+RESULT: 258
+--- postfix expression transforming ---
+encounter (: push to the stack directly
+	current output:
+	current stack:  (
+encounter (: push to the stack directly
+	current output:
+	current stack:  ( (
+encounter 3: push to output
+	current output: 3
+	current stack:  ( (
+encounter &&: push to the stack directly
+	current output: 3
+	current stack:  ( ( &&
+encounter U+: push to the stack directly
+	current output: 3
+	current stack:  ( ( && +
+encounter 1: push to output
+	current output: 3 1
+	current stack:  ( ( && +
+encounter ||: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 3 1 + &&
+	current stack:  ( ( ||
+encounter 1: push to output
+	current output: 3 1 + && 1
+	current stack:  ( ( ||
+encounter ): flush the stack to output until meeting '('
+	current output: 3 1 + && 1 ||
+	current stack:  (
+encounter ^: push to the stack directly
+	current output: 3 1 + && 1 ||
+	current stack:  ( ^
+encounter 12: push to output
+	current output: 3 1 + && 1 || 12
+	current stack:  ( ^
+encounter <<: push to the stack directly
+	current output: 3 1 + && 1 || 12
+	current stack:  ( ^ <<
+encounter 1: push to output
+	current output: 3 1 + && 1 || 12 1
+	current stack:  ( ^ <<
+encounter ): flush the stack to output until meeting '('
+	current output: 3 1 + && 1 || 12 1 << ^
+encounter &: push to the stack directly
+	current output: 3 1 + && 1 || 12 1 << ^
+	current stack:  &
+encounter 16: push to output
+	current output: 3 1 + && 1 || 12 1 << ^ 16
+	current stack:  &
+encounter |: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 3 1 + && 1 || 12 1 << ^ 16 &
+	current stack:  |
+encounter 2: push to output
+	current output: 3 1 + && 1 || 12 1 << ^ 16 & 2
+	current stack:  |
+encounter NOTHING: flush the stack to output
+	current output: 3 1 + && 1 || 12 1 << ^ 16 & 2 |
+--- postfix expression transforming complete :) ---
+Postfix Exp: 3 1 + && 1 || 12 1 << ^ 16 & 2 |
+RESULT: 18

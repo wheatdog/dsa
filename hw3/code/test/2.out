@@ -1,0 +1,151 @@
+--- postfix expression transforming ---
+encounter U-: push to the stack directly
+	current output:
+	current stack:  -
+encounter pow: push to the stack directly
+	current output:
+	current stack:  - pow
+encounter (: push to the stack directly
+	current output:
+	current stack:  - pow (
+encounter (: push to the stack directly
+	current output:
+	current stack:  - pow ( (
+encounter 2.3: push to output
+	current output: 2.300000
+	current stack:  - pow ( (
+encounter +: push to the stack directly
+	current output: 2.300000
+	current stack:  - pow ( ( +
+encounter 3: push to output
+	current output: 2.300000 3.000000
+	current stack:  - pow ( ( +
+encounter ): flush the stack to output until meeting '(' 
+	current output: 2.300000 3.000000 +
+	current stack:  - pow (
+encounter *: push to the stack directly
+	current output: 2.300000 3.000000 +
+	current stack:  - pow ( *
+encounter 2: push to output
+	current output: 2.300000 3.000000 + 2.000000
+	current stack:  - pow ( *
+encounter exp: push to the stack directly
+	current output: 2.300000 3.000000 + 2.000000
+	current stack:  - pow ( * exp
+encounter (: push to the stack directly
+	current output: 2.300000 3.000000 + 2.000000
+	current stack:  - pow ( * exp (
+encounter log: push to the stack directly
+	current output: 2.300000 3.000000 + 2.000000
+	current stack:  - pow ( * exp ( log
+encounter (: push to the stack directly
+	current output: 2.300000 3.000000 + 2.000000
+	current stack:  - pow ( * exp ( log (
+encounter 2: push to output
+	current output: 2.300000 3.000000 + 2.000000 2.000000
+	current stack:  - pow ( * exp ( log (
+encounter ): flush the stack to output until meeting '(' and pop function 'log' to output
+	current output: 2.300000 3.000000 + 2.000000 2.000000 log
+	current stack:  - pow ( * exp (
+encounter ): flush the stack to output until meeting '(' and pop function 'exp' to output
+	current output: 2.300000 3.000000 + 2.000000 2.000000 log exp
+	current stack:  - pow ( *
+encounter ): flush the stack to output until meeting '(' and pop function 'pow' to output
+	current output: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow
+	current stack:  -
+encounter NOTHING: flush the stack to output
+	current output: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow -
+--- postfix expression transforming complete :) ---
+Postfix Exp: 2.300000 3.000000 + 2.000000 2.000000 log exp * pow -
+RESULT: -789.048100
+--- postfix expression transforming ---
+encounter sqrt: push to the stack directly
+	current output:
+	current stack:  sqrt
+encounter (: push to the stack directly
+	current output:
+	current stack:  sqrt (
+encounter 1: push to output
+	current output: 1.000000
+	current stack:  sqrt (
+encounter /: push to the stack directly
+	current output: 1.000000
+	current stack:  sqrt ( /
+encounter 16: push to output
+	current output: 1.000000 16.000000
+	current stack:  sqrt ( /
+encounter ): flush the stack to output until meeting '(' and pop function 'sqrt' to output
+	current output: 1.000000 16.000000 / sqrt
+encounter +: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt
+	current stack:  +
+encounter fabs: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt
+	current stack:  + fabs
+encounter (: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt
+	current stack:  + fabs (
+encounter sin: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt
+	current stack:  + fabs ( sin
+encounter (: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt
+	current stack:  + fabs ( sin (
+encounter 3: push to output
+	current output: 1.000000 16.000000 / sqrt 3.000000
+	current stack:  + fabs ( sin (
+encounter /: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt 3.000000
+	current stack:  + fabs ( sin ( /
+encounter 2: push to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000
+	current stack:  + fabs ( sin ( /
+encounter *: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 /
+	current stack:  + fabs ( sin ( *
+encounter 3.1415926: push to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593
+	current stack:  + fabs ( sin ( *
+encounter ): flush the stack to output until meeting '(' and pop function 'sin' to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin
+	current stack:  + fabs (
+encounter ): flush the stack to output until meeting '(' and pop function 'fabs' to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs
+	current stack:  +
+encounter +: stack.top() has greater or the same precdence, after pop something out to output, then push to the stack
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+	current stack:  +
+encounter U+: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+	current stack:  + +
+encounter cos: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+	current stack:  + + cos
+encounter (: push to the stack directly
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs +
+	current stack:  + + cos (
+encounter 3.1415926: push to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593
+	current stack:  + + cos (
+encounter ): flush the stack to output until meeting '(' and pop function 'cos' to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos
+	current stack:  + +
+encounter NOTHING: flush the stack to output
+	current output: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos + +
+--- postfix expression transforming complete :) ---
+Postfix Exp: 1.000000 16.000000 / sqrt 3.000000 2.000000 / 3.141593 * sin fabs + 3.141593 cos + +
+RESULT: 0.250000
+--- postfix expression transforming ---
+encounter 0.00: push to output
+	current output: 0.000000
+encounter +: push to the stack directly
+	current output: 0.000000
+	current stack:  +
+encounter 1.2: push to output
+	current output: 0.000000 1.200000
+	current stack:  +
+encounter NOTHING: flush the stack to output
+	current output: 0.000000 1.200000 +
+--- postfix expression transforming complete :) ---
+Postfix Exp: 0.000000 1.200000 +
+RESULT: 1.200000
