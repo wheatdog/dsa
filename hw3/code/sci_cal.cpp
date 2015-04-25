@@ -56,7 +56,7 @@ void ShowPostfix(vector<string>& PostfixExpress, const string& Message)
         if ((*i).at(0) == 'U')
             cout << (*i).at(1);
         else if (isdigit((*i).at(0)))
-            printf("%.6f", atof(i->c_str()));
+            printf("%.6f", stod(*i,0));
         else
             cout << *i;
     }
@@ -235,7 +235,7 @@ double Calulate(vector<string>& PostfixExpress)
     {
         if (isdigit(Pit->front()) || Pit->front() == '.')
         {
-            NumStack.push(atof(Pit->c_str()));
+            NumStack.push(stod(*Pit, 0));
         }
         else
         {
@@ -337,6 +337,7 @@ int main()
         printf("RESULT: %.6f\n", Result);
 
         PostfixExpress.clear();
+        cout << .3*.3*.3*sin(1) << endl;
     }
 
     return 0;
