@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <cctype>
@@ -131,8 +132,10 @@ void ToPostfix(string& Express, vector<string>& PostfixExpress)
 
                 if (isalpha(*It))
                 {
-                    while (*(++It) != '(')
+                    while (isalpha(*(++It)))
+                    {
                         Buf.push_back(*It);
+                    }
                     --It;
                 }
 
@@ -230,7 +233,7 @@ double Calulate(vector<string>& PostfixExpress)
             Pit != PostfixExpress.end();
             ++Pit)
     {
-        if (isdigit(Pit->front()))
+        if (isdigit(Pit->front()) || Pit->front() == '.')
         {
             NumStack.push(atof(Pit->c_str()));
         }
@@ -309,6 +312,10 @@ double Calulate(vector<string>& PostfixExpress)
                 First = NumStack.top();
                 NumStack.pop();
                 NumStack.push(fabs(First));
+            }
+            else
+            {
+                cout << "*" << *Pit << "*" << "Not Found" << endl;
             }
         }
     }
