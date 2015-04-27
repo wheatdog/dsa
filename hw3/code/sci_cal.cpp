@@ -253,7 +253,6 @@ double Calulate(vector<string>& PostfixExpress)
             Pit != PostfixExpress.end();
             ++Pit)
     {
-        cout << "\t" << *Pit << endl;
         if (isdigit(Pit->front()) || Pit->front() == '.')
         {
             NumStack.push(stod(*Pit, 0));
