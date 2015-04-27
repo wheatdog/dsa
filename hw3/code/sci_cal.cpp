@@ -55,7 +55,7 @@ void ShowPostfix(vector<string>& PostfixExpress, const string& Message)
         cout << " ";
         if ((*i).at(0) == 'U')
             cout << (*i).at(1);
-        else if (isdigit((*i).at(0)))
+        else if ((*i).at(0) == '.' || isdigit((*i).at(0)))
             printf("%.6f", stod(*i,0));
         else
             cout << *i;
@@ -184,7 +184,7 @@ void ToPostfix(string& Express, vector<string>& PostfixExpress)
                     }
                     Operators.pop();
 
-                    if (isalpha(Operators.top().at(0)))
+                    if (!Operators.empty() && isalpha(Operators.top().at(0)))
                     {
                         cout << "and pop function '" << Operators.top() << "' to output";
                         PostfixExpress.push_back(Operators.top());
