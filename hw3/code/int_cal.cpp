@@ -264,6 +264,11 @@ int Calulate(vector<string>& PostfixExpress)
                 DetermineOperands(NumStack, First, Second);
                 NumStack.push(First && Second);
             }
+            else if (Pit->compare("^") == 0)
+            {
+                DetermineOperands(NumStack, First, Second);
+                NumStack.push(First ^ Second);
+            }
             else if (Pit->compare("|") == 0)
             {
                 DetermineOperands(NumStack, First, Second);
