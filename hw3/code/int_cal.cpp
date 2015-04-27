@@ -248,7 +248,7 @@ int Calulate(vector<string>& PostfixExpress)
     {
         if (isdigit(Pit->front()))
         {
-            NumStack.push(atoi(Pit->c_str()));
+            NumStack.push(stoi(*Pit, 0, 10));
         }
         else
         {

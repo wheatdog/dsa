@@ -313,10 +313,6 @@ double Calulate(vector<string>& PostfixExpress)
                 NumStack.pop();
                 NumStack.push(fabs(First));
             }
-            else
-            {
-                cout << "*" << *Pit << "*" << "Not Found" << endl;
-            }
         }
     }
     return NumStack.top();
@@ -337,7 +333,6 @@ int main()
         printf("RESULT: %.6f\n", Result);
 
         PostfixExpress.clear();
-        cout << .3*.3*.3*sin(1) << endl;
     }
 
     return 0;
