@@ -105,13 +105,33 @@ void ToPostfix(string& Express, vector<string>& PostfixExpress)
     cout << "--- postfix expression transforming ---" << endl;
     for (string::iterator It = Express.begin(); It != Express.end(); ++It)
     {
-        if (isspace(*It) || *It == ',')
+        if (isspace(*It))
             continue;
 
         if (isdigit(*It) || *It == '.')
         {
             Buf.push_back(*It);
             WasOperator = 0;
+        }
+        else if (*It == ',')
+        {
+            if (Buf.size())
+            {
+                cout << "encounter " << Buf << " and ',': " << "push number to output and flush the stack to output until meeting '('" << endl;
+                PostfixExpress.push_back(Buf);
+                Buf.clear();
+            }
+
+            while (Operators.top().compare("(") != 0)
+            {
+                PostfixExpress.push_back(Operators.top());
+                Operators.pop();
+            }
+
+            ShowPostfix(PostfixExpress, "\tcurrent output:");
+            ShowOprStack(Operators);
+
+            WasOperator = 1;
         }
         else
         {
@@ -233,6 +253,7 @@ double Calulate(vector<string>& PostfixExpress)
             Pit != PostfixExpress.end();
             ++Pit)
     {
+        cout << "\t" << *Pit << endl;
         if (isdigit(Pit->front()) || Pit->front() == '.')
         {
             NumStack.push(stod(*Pit, 0));
