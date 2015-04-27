@@ -1,8 +1,8 @@
 # Data Structure and Algorithm 
 
-## Intro
+## Description
 
-This is my homework archive of DSA 2015 Spring in NTU. Every assignment contains two part, code and hand-writing.
+This is my homework archive of DSA 2015 Spring in NTU. Every assignment contains two part, coding and written.
 
 ## Related Websites
 
