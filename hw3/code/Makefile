@@ -21,4 +21,4 @@ run1:
 run2: 
 	@./3_4_2.out 
 
-include ../../dep/push.make
+-include ../../dep/push.make
