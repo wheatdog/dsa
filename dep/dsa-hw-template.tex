@@ -11,7 +11,6 @@
 \usepackage{listings}
 \usepackage{lastpage}
 \usepackage{color}
-\usepackage{tikz}
 
 \usetikzlibrary{shapes,positioning,arrows,calc}
 \usetikzlibrary{automata,positioning}
@@ -112,7 +111,7 @@
 % Various Helper Commands
 %
 
-\newcommand{\subqest}[1]{\textbf{(\arabic{partCounter})} #1 \stepcounter{partCounter} \par}
+\newcommand{\subqest}[1]{ \textbf{(\arabic{partCounter})} #1 \stepcounter{partCounter} \par }
 
 % Something need to be done
 \newcommand{\pending}[1][]{~~~~\textcolor{red}{ 
