@@ -26,6 +26,8 @@
 \input{../../dep/dsa-hw-template.tex}
 \usepackage{qtree}
 \usepackage{enumitem}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
 
 \begin{document}
 
@@ -73,11 +75,15 @@
 
     \subqest{Do Exercise C-7.3 of the textbook.}
 
-    $post(v) = pre(v) + desc(v) - depth(v)$
+    $post(v) = pre(v) - depth(v) + desc(v) $
 
     For the root, with post-order, we will visit its descendents first, then 
     visit it, but with pre-order, we will visit it first, then
-    visit its descendents. 
+    visit its descendents. And for other non-root node, it also satifies the
+    statement I just mentioned. However the formula need to be fix by $depth(v)$.
+    Note that $depth(root) = 0$. Eventually, we have the formula written above.
+
+    \pagebreak
 
     \subqest{Do Exercise C-7.7 of the textbook with pseudo code.}
 
@@ -130,6 +136,8 @@
     No below each threshold. We will know the values of TotalY and TotalN
     because we can get them when we encounter the biggest thresold $v_M+1$.
 
+    \pagebreak
+
     \subqest{Implement the decision tree algorithm.}
     Code part.
 
@@ -155,16 +163,43 @@ struct DTree {
     \subqest{Teach your decision tree with the following examples to learn a 
     function $f$ with $\epsilon$ = 0. Draw the tree you get.}
 
-    Left side means Yes and right side means No.
+    Left side means Yes, and right side means No.
 
-    \Tree [.Weight$\;<63.5$ -1 [ +1 [ -1 +1 ].Weight$\;<86.5$ ].Weight$\;<78.5$  ]
+    \Tree [.(Weight$\;<63.5$) -1 [ +1 [ -1 +1 ].(Weight$\;<86.5$) ].(Weight$\;<78.5$) ]
 
+    \pagebreak
 
     \subqest{Construct your own data set with at least 2 numerical factors and
     at least 6 examples. Teach your program to make a decision tree of at
     least 2 levels with this data set. List the examples as well as draw
     the tree found. Briefly explain the tree.}
-    \pending
+
+    \begin{center}
+        \begin{tabular}{ |c|c|c|c|c| } 
+        \hline
+        Allowances per week & Weight & Height & Eat Dinner Every Day\\
+        \hline
+            1000 & 53 & 172 & +1\\ 
+            2000 & 90 & 178 & +1\\ 
+            1500 & 83 & 162 & +1\\ 
+            1200 & 45 & 164 & -1\\ 
+            900 & 53 & 169 & -1\\ 
+            10000 & 70 & 172 & +1\\ 
+            1300 & 77 & 185 & +1\\ 
+            800 & 74 & 170 & -1\\ 
+            11000 & 40 & 165 & -1\\ 
+        \hline
+        \end{tabular}
+    \end{center}
+
+    Left side means Yes, and right side means No.
+
+    \Tree [.(Weight$\;<61.5$) [ [ -1 +1 ].(Allowance$\;<950$) -1 ].(Allowance$\;<1100$) +1 ]
+
+    We can find whether a person eat dinner every day is related to his or her 
+    weight and allowance by this tree. It seem that the result isn't really
+    related to his or her height. However, this is a small data set, this decision
+    tree may be meaningless.
 
     \subqest{Implement the random forest algorithm.}
     Code part.
