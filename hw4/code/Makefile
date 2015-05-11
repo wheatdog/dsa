@@ -1,6 +1,6 @@
 CPPFLAGS = -O2 -std=c++11 -Wall
 CPPC = g++
-TARGET = # targets
+TARGET = tree forest
 
 all: $(TARGET)
 
@@ -9,5 +9,11 @@ all: $(TARGET)
 
 %: %.cpp
 	g++ $(CPPFLAGS) $< -o $@
+
+tree: tree.cpp dtree.h dtree.cpp
+	g++ $(CPPFLAGS) tree.cpp dtree.cpp -o $@
+
+forest: forest.cpp dtree.h dtree.cpp
+	g++ $(CPPFLAGS) forest.cpp dtree.cpp -o $@
 
 -include ../../dep/push.make
