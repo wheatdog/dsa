@@ -24,6 +24,8 @@
 
 
 \input{../../dep/dsa-hw-template.tex}
+\usepackage{qtree}
+\usepackage{enumitem}
 
 \begin{document}
 
@@ -37,22 +39,135 @@
 
 \begin{homeworkProblem}{Tree}
     \subqest{Do Exercise R-7.15 of the textbook.}
-    \pending
+    \Tree [.E [ [ M F ].A U ].X N ]
 
     \subqest{Do Exercise R-7.24 of the textbook.}
-    \pending
+    \begin{enumerate}[label=(\alph*)]
+        \item 
+            We can easily find the level of right child is larger than its parent 
+            and its sibling. It implies that it will obtain the largest level if
+            all the nodes (except the root) is its parent's right child. 
+
+            \Tree [.$a_1$ (null) [.$a_2$ (null) [.$a_3$ (null) [.$\vdots$ (null) [.$a_n$ (null) ]]]]] \\
+
+            Note that $f(a_n) = 2f(a_{n-1}) + 1$, and we can find
+            \begin{align*}
+                &\Rightarrow f(a_n) + 1 = 2(f(a_{n-1}) + 1) \\
+                &\Rightarrow f(a_n) + 1 = 2^2(f(a_{n-2}) + 1) = \dots = 2^{n-1}(f(a_1) + 1) \\
+                &\Rightarrow f(a_n) + 1 = 2^n \\
+                &\Rightarrow f(a_n) = 2^n - 1\\
+            \end{align*}
+            We find the upper bound of level for a binary tree with $n$ nodes. 
+            That is, for every node $v$ of $T$,
+            \[
+                f(v) \leq 2^n - 1
+            \]
+            
+        \item 
+            \Tree [.$x_1$ (null) [.$x_2$ (null) [.$x_3$ (null) [.$x_4$ (null) [.$x_5$ (null) [.$x_6$ (null) [.$x_7$ (null) ]]]]]]] \\
+            There are 7 nodes in this tree. The upper bound of the level is $2^7 -1 = 127$.
+            We can easily find $f(x_7) = 127$ by the formula in (a). The node $x_7$
+            attains the above upper bound on $f$ in this tree.
+            
+    \end{enumerate}
 
     \subqest{Do Exercise C-7.3 of the textbook.}
-    \pending
+
+    $post(v) = pre(v) + desc(v) - depth(v)$
+
+    For the root, with post-order, we will visit its descendents first, then 
+    visit it, but with pre-order, we will visit it first, then
+    visit its descendents. 
 
     \subqest{Do Exercise C-7.7 of the textbook with pseudo code.}
-    \pending
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{Print}{\emph{root, NumOfIndent}}
+            \If{root has children}
+                \State{print out the content in root and '(' with NumOfIndent indent.}
+                \ForAll{$i \gets$ children}
+                    \State{\Call{Print}{\emph{i, NumOfIndent + 1}}}
+                \EndFor
+                \State{print out ')' with NumOfIndent indent}
+            \Else
+                \State{print out the content in root with NumOfIndent indent.}
+            \EndIf
+            \State{\Return{}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Print a tree with indented parenthetic representation}
+    \end{algorithm}
+
+    Call this function by \alg{Print$(root, 0)$}.
 
 \end{homeworkProblem}
 
 
 \begin{homeworkProblem}{Decision Tree}
+    \subqest{Using the property that the $v_m$ values are sorted, describe an $O(M)$
+    algorithm to calculate the best threshold.}
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \ForAll{$i \gets $ data}
+            \If{The value of this feature is bigger than $threshold_j$}
+                \State{initial $a_{j+1}$Y$b_{j+1}$N with the value in $a_j$Y$b_j$N}
+                \State{$j \gets j + 1$}
+            \Else
+                \State{Update $a_j$Y$b_j$N.}
+            \EndIf
+            \EndFor
+            \ForAll{$i \gets $ thresholds}
+                \State{calculate the confusion by using $a_i$Y$b_i$N and $(TotalY - a_i)$Y$(TotalN - b_i)$N.}
+                \State{check if this confusion is smaller than previous.}
+            \EndFor
+        \end{algorithmic}
+        \caption{Calculate the best threshold with an $O(M)$ algorithm}
+    \end{algorithm}
+
+    The purpose of first \alg{for loop} is to calcuate and store how many Yes and
+    No below each threshold. We will know the values of TotalY and TotalN
+    because we can get them when we encounter the biggest thresold $v_M+1$.
+
+    \subqest{Implement the decision tree algorithm.}
+    Code part.
+
+    \subqest{Illustrate (ideally with drawing) the internal data structure you 
+    use to represent the decision tree in your memory. Please be as precise 
+    as possible.}
+    I use this data structure to represent the decision tree.
+
+    \begin{lstlisting}[breaklines=true]
+struct BranchChoice {
+    int BestFeature;
+    double BestTotalConfusion;
+    double BestThresholdID;
+    double BestThreshold;
+};
+struct DTree {
+    BranchChoice Choice;
+    DTree *left;  
+    DTree *right;
+};
+    \end{lstlisting}
+
+    \subqest{Teach your decision tree with the following examples to learn a 
+    function $f$ with $\epsilon$ = 0. Draw the tree you get.}
+
+    Left side means Yes and right side means No.
+
+    \Tree [.Weight$\;<63.5$ -1 [ +1 [ -1 +1 ].Weight$\;<86.5$ ].Weight$\;<78.5$  ]
+
+
+    \subqest{Construct your own data set with at least 2 numerical factors and
+    at least 6 examples. Teach your program to make a decision tree of at
+    least 2 levels with this data set. List the examples as well as draw
+    the tree found. Briefly explain the tree.}
     \pending
+
+    \subqest{Implement the random forest algorithm.}
+    Code part.
 \end{homeworkProblem}
 
 \end{document}
