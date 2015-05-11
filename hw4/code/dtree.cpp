@@ -16,9 +16,6 @@ double Confusion(int a, int b)
     double ans = (a + b == 0)? 
         1 : 1 - ((double) a / (a + b))*((double) a / (a + b)) - 
                ((double) b / (a + b))*((double) b / (a + b));
-#if 0
-    cout << "\tConfusion(" << a << ", " << b << "): " << ans << endl;
-#endif
     return ans;
 }
 
@@ -26,11 +23,6 @@ double TotalConfusion(int a, int b, int c, int d)
 {
     double sum = a + b + c + d;
     double ans = (((a + b) / sum) * Confusion(a, b) + ((c + d) / sum) * Confusion(c, d));
-
-#if 0
-    cout << "\tConfusion(" << a << ", " << b << ", " << c <<", " << d <<"): " << ans << endl;
-#endif
-
     return ans;
 }
 
@@ -44,11 +36,6 @@ void ReadRawData(vector<RawData> &Data, char* FilePath)
     while (getline(fin, s))
     {
         RawData Buffer;
-
-#if 0
-        cout << s << endl;
-#endif
-
         size_t found =  s.find(" "); 
         size_t last = 0;
 
@@ -59,10 +46,6 @@ void ReadRawData(vector<RawData> &Data, char* FilePath)
 
         while (found != string::npos)
         {
-#if 0
-            cout << s.substr(last, found - last) << endl;
-#endif
-
             size_t colon =  s.find(":", last); 
 
             int ID = stoi(s.substr(last + 1, colon - last - 1), 0);
@@ -78,24 +61,6 @@ void ReadRawData(vector<RawData> &Data, char* FilePath)
     }
 
     fin.close();
-
-#if 0
-    // Note: Check if storage is correct.
-    cout << "DataNum = " << Data.size() << endl;
-
-    for (vector<RawData>::iterator it = Data.begin();
-            it != Data.end();
-            ++it)
-    {
-        cout << it->Label << endl;
-        for (int j = 0; j < FEATURENUM; j++)
-        {
-            if (it->Feature[j] != 0)
-                cout << "\t(" << j << ", " << it->Feature[j] << ")" << endl;
-        }
-    }
-#endif
-
 }
 
 void FillThreshold(vector<double> &ThresholdSet,
@@ -110,26 +75,6 @@ void FillThreshold(vector<double> &ThresholdSet,
         {
             ValueSet.insert(it->Feature[ID]);
         }
-
-#if 0
-        for (set<double>::iterator jt = ValueSet.begin();
-                jt != ValueSet.end();
-                ++jt)
-        {
-            cout << *jt << " ";
-        }
-        cout << endl;
-
-        cout << "[" << ID << "]: " ;
-        for (vector<RawData>::iterator it = start;
-                it != end;
-                ++it)
-        {
-            cout << it->Label << " ";
-        }
-        cout << endl;
-#endif
-
         double last = *ValueSet.begin();
         for (set<double>::iterator jt = next(ValueSet.begin());
              jt != ValueSet.end(); ++jt)
@@ -205,37 +150,12 @@ BranchChoice FindBranchChoice(vector<RawData> &Data,
             }
         }
 
-#if 0
-        cout << "\t(";
-        for (vector<double>::iterator it = ThresholdSet.begin();
-             it != ThresholdSet.end();
-             ++it)
-        {
-            cout << *it << " ";
-        }
-        cout << ")" << endl;
         for (unsigned int i = 0; i < LabelSet.size(); i++)
         {
-            cout <<  "{" << ThresholdSet[i] << "}: "
-                << LabelSet[i].Y << ", " << LabelSet[i].N << endl;
-        }
-#endif
-
-        for (unsigned int i = 0; i < LabelSet.size(); i++)
-        {
-#if 0
-            cout << LabelSet[i].Y << " " 
-                 << LabelSet[i].N << " "
-                 << Total.Y - LabelSet[i].Y << " "
-                 << Total.N - LabelSet[i].N << ": ";
-#endif
             double tmp = TotalConfusion(LabelSet[i].Y, 
                                         LabelSet[i].N,
                                         Total.Y - LabelSet[i].Y,
                                         Total.N - LabelSet[i].N);
-#if 0
-            cout << "\t" << tmp << endl;
-#endif
             if (Choice.BestTotalConfusion > tmp)
             {
                 Choice.BestFeature = Cmp.ID;
@@ -244,11 +164,6 @@ BranchChoice FindBranchChoice(vector<RawData> &Data,
                 Choice.BestTotalConfusion = tmp;
             }
         }
-#if 0
-        cout << endl;
-        cout << Choice.BestTotalConfusion << endl;
-        cout << Cmp.ID << endl;
-#endif
     }
 
     return Choice;
@@ -300,14 +215,6 @@ void BuildTree(DTree *Tree, double Epsilon, vector<RawData> &Data,
     {
         Tree->Choice = FindBranchChoice(Data, Total, start, end);
 
-#if 0
-        cout << Total.Y << " " << Total.N << endl;
-        cout << Tree->Choice.BestFeature << endl;
-        cout << Tree->Choice.BestThreshold << endl;
-        cout << Tree->Choice.BestThresholdID << endl;
-        cout << Tree->Choice.BestTotalConfusion << endl;
-#endif
-
         CompareByFeature Cmp;
         Cmp.ID = Tree->Choice.BestFeature;
         sort(start, end, Cmp);
@@ -325,29 +232,6 @@ void BuildTree(DTree *Tree, double Epsilon, vector<RawData> &Data,
                 LeftEnd = it;
             }
         }
-
-#if 0
-        cout << "*****************" << endl;
-        for (vector<RawData>::iterator it = start; 
-                it != LeftEnd;
-                ++it)
-        {
-            cout << it->Feature[Tree->Choice.BestFeature] << " ";
-        }
-        cout << endl;
-        cout << "*****************" << endl;
-        for (vector<RawData>::iterator it = LeftEnd; 
-                it != end;
-                ++it)
-        {
-            cout << "\t" << it->Label << "\t";
-            for (int i = 1; i < FEATURENUM; i++)
-                cout << it->Feature[i] << " ";
-            cout << endl;
-        }
-        cout << endl;
-        cout << "*****************" << endl;
-#endif
 
         DTree *left = new DTree;
         Tree->left = left;
