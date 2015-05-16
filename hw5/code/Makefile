@@ -1,6 +1,6 @@
-CPPFLAGS = -O2 -std=c++11 -Wall
+CPPFLAGS = -O2 -std=c++11 -Wall -Wno-write-strings
 CPPC = g++
-TARGET = # targets
+TARGET = system
 
 all: $(TARGET)
 
@@ -8,6 +8,9 @@ all: $(TARGET)
 	gcc $(CFLAGS) $< -o $@
 
 %: %.cpp
+	g++ $(CPPFLAGS) $< -o $@
+
+system: system.cpp
 	g++ $(CPPFLAGS) $< -o $@
 
 -include ../../dep/push.make
