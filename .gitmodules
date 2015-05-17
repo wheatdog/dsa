@@ -1,4 +1,0 @@
-[submodule "final_project"]
-	path = final_project
-	url = git@github.com:wheatdog/dsa_final_project.git
-	branch = master
