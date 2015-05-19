@@ -25,6 +25,8 @@
 
 \input{../../dep/dsa-hw-template.tex}
 
+\usepackage{qtree}
+
 \begin{document}
 
 \pagenumbering{gobble}
@@ -37,13 +39,48 @@
 
 \begin{homeworkProblem}{Heap and Hash}
     \subqest{Complete Exercise R-8.24 of the textbook.}
-    \pending
+    Consider a min heap. The insertion of an entry with key 32 would cause up-head
+    bubbling to proceed all the way up to a child of the root in this heap.
+
+    \Tree [.1 [.3 [.5 [.9 17 19 ] [.11 21 23 ] ] [.7 [.13 25 27 ] [.15 29 31 ] ] ] [.33 [.47 [.55 57 59 ] [.49 53 51 ] ] [.35 [.41 45 43 ] [.37 39 (32) ] ] ] ]
 
     \subqest{Complete Exercise C-8.4 of the textbook.}
-    \pending
+    Combine each key we want to insert to the stack with a priority variable.
+    These combinations would be insert to the MaxPriorityQueue which compare
+    elements by the priority variable. Note that the basic idea of this method
+    is the fact that every new element is pushed in stack with a priority higher
+    than the current one. Then, MaxPriorityQueue will behave in the LIFO way, 
+    which is what we want.
+
+    \begin{lstlisting}[breaklines=true]
+    class Stack {
+        class Element { int priority, Key element; };
+        MaxPriorityQueue<Element> MaxPQ;
+        int top_priority = 0;
+
+        void push(Key key) { MaxPQ.insert(Element(top_priority++, key)); }
+        void pop() { top_priority--; MaxPQ.removeMax() }
+        const Key& top() { return MaxPQ.max(); }
+        int size() { return top_priority; }
+        bool empty() { return (top_priority == 0); }
+    };
+    \end{lstlisting}
+
+    \pagebreak
 
     \subqest{Complete Exercise C-8.14 of the textbook.}
-    \pending
+
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{FindLeqElemInHeap}{\emph{heap, key}}
+            \While{heap.top() $\leq$ key}
+                \State{insert heap.top() into the output list, and do heap.removeMin()}
+            \EndWhile
+            \State{\Return the output list}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Compute all the entries in a heap with a key less than or equal to the value}
+    \end{algorithm}
 
     \subqest{Hash function is everywhere. Use any search engine to study the 
         term “MinHash” Explain to the TAs what it is and why it is useful. Also,
