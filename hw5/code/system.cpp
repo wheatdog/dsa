@@ -1,8 +1,25 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include "binomial_heap.h"
 
 using namespace std;
+
+struct Task {
+    int ID;
+    int Priority;
+    bool operator > (const Task &b) 
+    { 
+        if (Priority != b.Priority)
+            return Priority > b.Priority; 
+        else 
+            return ID < b.ID;
+    }
+};
+
+struct Computer {
+    BinomialHeap<Task> Tasks;
+};
 
 int GetCommand(string &Input)
 {
@@ -23,9 +40,10 @@ int GetCommand(string &Input)
 
 int main()
 {
-    int ComputerNum, WorkloadUpperBound;
-    cin >> ComputerNum >> WorkloadUpperBound;
+    int ComputerNum, WorkloadLimit;
+    cin >> ComputerNum >> WorkloadLimit;
 
+    Computer *Computers = new Computer[ComputerNum];
 
     string Input;
 
@@ -37,23 +55,43 @@ int main()
         {
             case _ASSIGN:
             {
-                int ComputerID, TaskID, Priority;
-                cin >> ComputerID >> TaskID >> Priority;
-                cout << ComputerID << " " << TaskID << " " <<  Priority << endl;
+                int ComputerID;
+                Task t;
+
+                cin >> ComputerID >> t.ID >> t.Priority;
+
+                Computers[ComputerID].Tasks.insert(t);
+                cout << "There are " << Computers[ComputerID].Tasks.size 
+                     << " tasks on computer " << ComputerID << "." << endl;
             } break;
 
             case _MERGE:
             {
                 int ToID, FromID;
                 cin >> ToID >> FromID;
-                cout << ToID << " " << FromID << endl;
+                if (Computers[FromID].Tasks.size < WorkloadLimit)
+                {
+                    cout << "Merging request failed." << endl;
+                    break;
+                }
+
+                Computers[ToID].Tasks.merge(Computers[FromID].Tasks);
+                cout << "The largest priority number is now " 
+                     << Computers[ToID].Tasks.top().Priority
+                     << " on " << ToID << "." << endl;
+
             } break;
 
             case _EXECUTE:
             {
                 int ComputerID;
                 cin >> ComputerID;
-                cout << ComputerID << endl;
+
+                int Top = Computers[ComputerID].Tasks.top().Priority;
+                while (Computers[ComputerID].Tasks.size != 0 &&
+                       Computers[ComputerID].Tasks.top().Priority == Top)
+                cout << "Computer " << ComputerID << " executed task " 
+                     << Computers[ComputerID].Tasks.pop().ID << "." << endl;
             } break;
 
             default:
@@ -62,6 +100,8 @@ int main()
             } break;
         }
     }
+
+    delete[] Computers;
 
     return 0;
 }
