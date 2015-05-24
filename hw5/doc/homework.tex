@@ -22,7 +22,6 @@
 \newcommand{\hmwkAuthorName}{Tim Liou}
 \newcommand{\hmwkAuthorID}{b03902028}
 
-
 \input{../../dep/dsa-hw-template.tex}
 
 \usepackage{qtree}
@@ -85,28 +84,121 @@
     \subqest{Hash function is everywhere. Use any search engine to study the 
         term “MinHash” Explain to the TAs what it is and why it is useful. Also,
         cite the website that you learn the term from.}
-    \pending
+        I learn MinHash from 
+        \alg{http://shihpeng.org/tag/minhash/} and
+        \alg{http://en.wikipedia.org/wiki/MinHash}.
+
+        MinHash is a technique to estimate how similar two sets are. We can use
+        Jaccard similarity coefficient to find out the similarity between two
+        sets.
+        \begin{align*}
+            J(A,B) = \frac{\left|A \cap B\right|}{\left|A \cup B\right|}
+        \end{align*}
+        However, it is slow to compute $J(A,B)$ by the the way to check every
+        elements in this two sets. MinHash was designed to compute $J(A,B)$ fast.
+ 
+        Consider a case, $S_1=\left\{\,b,c\,\right\}$, $S_2=\left\{\,a,b\,\right\}$,
+        $S_1=\left\{\,b\,\right\}$
+        \begin{center}
+            \begin{tabular}{  c | c | c | c }
+                Element & $S_1$ & $S_2$ & $S_3$ \\ \hline \hline
+                a & 0 & 1 & 0\\
+                b & 1 & 1 & 1\\
+                c & 1 & 0 & 0\\
+                d & 0 & 0 & 0\\
+            \end{tabular}
+        \end{center}
+        And we permutate the element,
+        \begin{center}
+            \begin{tabular}{  c | c | c | c }
+                Element & $S_1$ & $S_2$ & $S_3$ \\ \hline \hline
+                c & 1 & 0 & 0\\
+                d & 0 & 0 & 0\\
+                b & 1 & 1 & 1\\
+                a & 0 & 1 & 0\\
+            \end{tabular}
+        \end{center}
+        Let $h^k_{min}$ be a hash function, which $k$ is a permutation of element.
+        In this case, $k$ is $cdba$. And $h^k_{min}$ is defined as the symbol of
+        the first non-zero row. In this case, $h^{cdba}_{min}(S_1) = c$ ,
+        $h^{cdba}_{min}(S_2) = b$ $h^{cdba}_{min}(S_2) = a$. We can find that
+        the value of $J(A,B)$ is as same as the possibility of 
+        $h^k_{min}(A) = h^k_{min}(B)$. The following is the proof.
+
+        For any two sets, we have three possible result for every elements.
+        \begin{description}
+            \item[Type 1] both are zero, that is, both sets do not contain this element.
+            \item[Type 2] one is zero and the other is one, that is, one set
+                contains this element.
+            \item[Type 3] both are one, that is, both sets contain this element.
+        \end{description}
+        The number of Type 1 is $M_1$, the number of Type 2 is $M_2$, and
+        the number of Type 3 is $M_3$. 
+        \begin{align*}
+        J(A,B) = \frac{M_3}{M_3 + M_2}
+        \end{align*}
+        The possibility of $h^k_{min}(A) = h^k_{min}(B)$ is 
+        \begin{align*}
+            P(\text{Type 3} \,|\, (\text{Type 2 or Type 3})) &= \frac{\frac{M_3}{M_1 + M_2 + M_3}}{\frac{M_2 + M_3}{M_1 + M_2 + M_3}} \\
+            &= \frac{M_3}{M_3 + M_2} = J(A,B)
+        \end{align*}
+
+        If we choose enough number of $k$, the possibility of 
+        $h^k_{min}(A) = h^k_{min}(B)$ will be closer to $J(A,B)$.
+
+        This method would be more efficient than the naive algorithm. The time 
+        complexity change from $O(M)$ to $O(1)$ since we don't have to go through
+        all elements. This could be useful for the sets contain lots of elements.
+
 
     \subqest{Describe an algorithm to find out the position that the two strings
         differ efficiently. Briefly discuss and justify the time complexity of
         your algorithm.}
-    \pending
+    \begin{algorithm}[]
+        \begin{algorithmic}[1]
+            \Function{FindDiffPostion}{\emph{s1, s2}}
+                \State{start $\gets$ 0}
+                \State{end $\gets$ the length of string - 1}
+                \State{middle $\gets$ $\lfloor$(start + end) / 2$\rfloor$}
+                \While{start $\neq$ end}
+                    \If{\Call{postfixHash}{s1, end - middle} $\neq$ \Call{postfixHash}{s2, end - middle}}
+                        \State{start $\gets$ middle + 1}
+                        \State{middle $\gets$ $\lfloor$(start + end) / 2$\rfloor$}
+                    \Else
+                        \State{end $\gets$ middle}
+                        \State{middle $\gets$ $\lfloor$(start + end) / 2$\rfloor$}
+                    \EndIf
+                \EndWhile
+                \State{\Return{start}}
+            \EndFunction{}
+        \end{algorithmic}
+        \caption{Find the position that the two strings differ efficiently}
+    \end{algorithm}
+    The time complexity of this algorithm is $O(\log n)$, which $n$ is the length
+    of two strings, because we check whether the hash values of the last half of 
+    two strings are the same. If they are same, it means the postion that two 
+    strings differ is in first half. Otherwise, the position is in the last half.
+    After one loop in \alg{while}, the length of string we need to check becomes
+    half. This implies that the time complexity of this algorithm is $O(\log n)$.
+
 
     \subqest{Construct a perfect hash function that is efficiently computable
             for the following 32 standard keywords in C. You need to explain why
             the hash function is perfect and why it is efficiently computable to
             get the full bonus.}
-    \pending
+            
 
 \end{homeworkProblem}
 
 \begin{homeworkProblem}{Distributed System}
     \subqest{Finish/rewrite the BinomialHeap class, and describe how you test 
         whether the data structure is correct.}
-    \pending
-
-    \subqest{Implement the system for three kinds of commands below.}
-    \pending[code part]
+        I wrote a simple cpp file to test this data structure. 
+        \lstset{breaklines=true}
+        \lstinputlisting[language=c++,showstringspaces=false]{../code/bhtest.cpp}
+        
+        I can check the correctness of this data structure by the output.
+        \lstinputlisting[showstringspaces=false]{../code/bhtest.out}
 
 
 \end{homeworkProblem}
