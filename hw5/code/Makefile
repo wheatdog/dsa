@@ -1,6 +1,6 @@
 CPPFLAGS = -O2 -std=c++11 -Wall -Wno-write-strings
 CPPC = g++
-TARGET = system hashtest bhtest
+TARGET = system bhtest hashtest
 
 all: $(TARGET)
 
@@ -11,9 +11,6 @@ all: $(TARGET)
 	g++ $(CPPFLAGS) $< -o $@
 
 system: system.cpp binomial_heap.h
-	g++ $(CPPFLAGS) $< -o $@
-
-bhtest: bhtest.cpp binomial_heap.h
 	g++ $(CPPFLAGS) $< -o $@
 
 run: 
