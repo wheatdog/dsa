@@ -30,6 +30,30 @@ class BinomialHeap {
         typedef std::pair<BT*, BT*> CarrySum;
         typedef std::pair<T, BH> MaxRemainder;
 
+        CarrySum half_adder(BT *a, BT *b) {
+            CarrySum Result;
+            if (a != nullptr && b != nullptr)
+            {
+                Result.second = nullptr;
+                if (a->element > b->element)
+                {
+                    a->children.push_back(b);
+                    Result.first = a;
+                }
+                else
+                {
+                    b->children.push_back(a);
+                    Result.first = b;
+                }
+                Result.first->_size *= 2;
+            }
+            else
+            {
+                Result.first = nullptr;
+                Result.second = (a != nullptr)? a:b;
+            }
+            return Result;
+        }
         /* Merge three binomial trees which have the same sizes
          *
          * INPUT:   a: operand a, b: operand b, c: carry in
@@ -43,47 +67,17 @@ class BinomialHeap {
          */
         CarrySum merge_tree(BT *a, BT *b, BT *c) {
             CarrySum Result;
+            CarrySum tmp = half_adder(a, b);
 
-            BT* ToCheck[3] = {a, b, c};
-            BT* Opr[3] = {nullptr, nullptr, nullptr};
-            int OprCount = 0;
-
-            for (int Count = 0; (Count < 3); Count++)
-                if (ToCheck[Count] != nullptr)
-                    Opr[OprCount++] = ToCheck[Count];
-
-            //std::cout << "*" << OprCount << std::endl;
-            if (OprCount == 0)
+            if (tmp.first != nullptr)
             {
-                Result.first = nullptr;
-                Result.second = nullptr;
+                Result.first = tmp.first;
+                Result.second = c;
             }
-            else if (OprCount == 1)
+            else
             {
-                Result.first = nullptr;
-                Result.second = Opr[0];
+                Result = half_adder(tmp.second, c);
             }
-            else if (OprCount >= 2)
-            {
-                if (Opr[0]->element > Opr[1]->element)
-                {
-                    Opr[0]->children.push_back(Opr[1]);
-                    Result.first = Opr[0];
-                }
-                else
-                {
-                    Opr[1]->children.push_back(Opr[0]);
-                    Result.first = Opr[1];
-                }
-
-                Result.first->_size *= 2;
-
-                if (OprCount == 2)
-                    Result.second = nullptr;
-                else
-                    Result.second = Opr[2];
-            }
-
             return Result;
         };
 
@@ -134,7 +128,6 @@ class BinomialHeap {
             this->size += b.size;
             for (int i = 0; i < 32; i++)
             {
-                //std::cout << i << std::endl;
                 CarrySum Out = merge_tree(this->trees[i], b.trees[i], Carry);
 
                 Carry = Out.first;
