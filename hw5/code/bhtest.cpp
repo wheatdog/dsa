@@ -5,32 +5,46 @@
 
 int main()
 {
-    BinomialHeap<int> BH, BH2;
+    BinomialHeap<int> bh, bh2;
 
     int input[] = {1, 29, 33, 234, 234, 92, 11};
     int input2[] = {2, 30, 31, 34, 92, 0, 111};
 
-    std::cout << ArraySize(input) << std::endl;
+    std::cout << "****************" << std::endl;
     for (unsigned int i = 0; i < ArraySize(input); i++)
     {
-        std::cout << "[" << input[i] << "]" << std::endl;
-        std::cout << "[" << input2[i] << "]" << std::endl;
-        BH.insert(input[i]);
-        BH2.insert(input2[i]);
+        bh.insert(input[i]);
+        std::cout << "insert [" << input[i] << "] to bh,\t" 
+                  << "bh.size = " << bh.size << std::endl;
     }
+    std::cout << "****************" << std::endl;
 
-    std::cout << "*" << BH.size << std::endl;
-    BH.merge(BH2);
-    std::cout << "*" << BH.size << std::endl;
-
-    for (unsigned int i = 0; i < 2*ArraySize(input); i++)
+    std::cout << "****************" << std::endl;
+    for (unsigned int i = 0; i < ArraySize(input2); i++)
     {
-        std::cout << BH.top() << std::endl;
-        BH.pop();
-        std::cout << "*" << BH.size << std::endl;
+        bh2.insert(input2[i]);
+        std::cout << "insert [" << input[i] << "] to bh2,\t" 
+                  << "bh2.size = " << bh2.size << std::endl;
     }
+    std::cout << "****************" << std::endl;
 
-    BH.merge(BH2);
+    std::cout << "****************" << std::endl;
+    std::cout << "bh.size = " << bh.size << std::endl;
+    std::cout << "bh2.size = " << bh2.size << std::endl;
+    bh.merge(bh2);
+    std::cout << "Merge bh2 to bh" << std::endl;
+    std::cout << "bh.size = " << bh.size << std::endl;
+    std::cout << "bh2.size = " << bh2.size << std::endl;
+    std::cout << "****************" << std::endl;
+
+    std::cout << "****************" << std::endl;
+    while (bh.size)
+    {
+        std::cout << "bh.top() is " << bh.top() << " and do bh.pop()" << std::endl;
+        bh.pop();
+    }
+    std::cout << "bh.size = " << bh.size << std::endl;
+    std::cout << "****************" << std::endl;
 
     return 0;
 }
