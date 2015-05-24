@@ -186,6 +186,26 @@
             for the following 32 standard keywords in C. You need to explain why
             the hash function is perfect and why it is efficiently computable to
             get the full bonus.}
+        Construct a simple hash function which would not make the values of 
+        these 32 keywords collision. For example, 
+        $h(s) = s.front() + 27 \times s.back() + 27^2 \times s.length()$.
+        It can show that these hashcodes are not the same.
+        \lstinputlisting[showstringspaces=false]{../code/hashcode.example}
+        Then, call these hashcodes $S = \left\{\,a_1, a_2, \hdots, a_{32}\,\right\}$.
+        Note that the values in $S$ are sorted. Use binary search to find the value
+        in $S$, and the perfect hashcode is the order number of the value. For 
+        instance, the hash function value of the keyword 'struct' is 7621, then
+        the perfect hashcode is 26.
+
+        This method is efficiently because we can build the table in advance. 
+        Besides, by using this method, we can change types of objects which
+        are hard to searched by binary search to number, which is easy to be 
+        searched by binary search.
+       
+
+        
+
+
             
 
 \end{homeworkProblem}
