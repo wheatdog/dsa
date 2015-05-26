@@ -1,9 +1,12 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <algorithm>
 
 using namespace std;
+
+#include "1_6_perfect_hashfunction.cpp"
 
 struct Pair {
     int code;
@@ -11,13 +14,6 @@ struct Pair {
 };
 
 bool compare (Pair i, Pair j) { return (i.code < j.code); }
-
-int HashCode(char *s)
-{
-    int Result;
-    Result = (27*27 * strlen(s) + 1 * s[0] + 27 * s[strlen(s) - 1]);
-    return Result;
-}
 
 int CheckUnique(int *array)
 {
@@ -31,7 +27,7 @@ int CheckUnique(int *array)
 
 int main()
 {
-    char *Keyword[] = {"auto",
+    string Keyword[] = {"auto",
                        "break",
                        "case", "char", "const", "continue",
                        "default", "do", "double",
@@ -47,7 +43,7 @@ int main()
                        "void", "volatile",
                        "while"};
 
-    int TotalNum = sizeof(Keyword) / sizeof(*Keyword);
+    int TotalNum = 32;
     vector<Pair> HashCodeArray(TotalNum);
 
 #if 0
@@ -63,7 +59,7 @@ int main()
 
     for (int i = 0; i < TotalNum; i++)
     {
-    cout << Keyword[HashCodeArray[i].id] << ": " <<  HashCodeArray[i].code << endl;
+        cout << Keyword[HashCodeArray[i].id] << ": " <<  HashCodeArray[i].code << endl;
     }
 
 #if 0
