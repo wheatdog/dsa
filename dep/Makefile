@@ -10,4 +10,7 @@ all: $(TARGET)
 %: %.cpp
 	g++ $(CPPFLAGS) $< -o $@
 
+clean:
+	rm $(TARGET)
+
 -include ../../dep/push.make

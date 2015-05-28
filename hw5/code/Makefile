@@ -23,4 +23,7 @@ run:
 	time ./system < test/tierb.1000.in > test/my.b.1000.out
 	@diff test/tierb.1000.out test/my.b.1000.out
 
+clean:
+	rm $(TARGET)
+
 -include ../../dep/push.make
