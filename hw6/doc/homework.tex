@@ -11,9 +11,9 @@
 %   - AuthorID
 %
 
-\newcommand{\hmwkID}{} % Need to be filled in
+\newcommand{\hmwkID}{6} % Need to be filled in
 \newcommand{\hmwkTitle}{Homework\ \#\hmwkID}
-\newcommand{\hmwkDueDate}{} % Need to be filled in
+\newcommand{\hmwkDueDate}{June 9, 2015 at 16:20} % Need to be filled in
 \newcommand{\hmwkUniversity}{NTU}
 \newcommand{\hmwkClass}{Data Structures and Algorithms}
 \newcommand{\hmwkClassAlias}{DSA}
@@ -35,7 +35,76 @@
 
 \pagenumbering{arabic}  
 
-\begin{homeworkProblem}{}
+\begin{homeworkProblem}{Skip List, Binary Search Tree}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Do Exercise C-9.15 of the textbook.
+
+            \pending
+
+        \item Do Exercise R-10.5 of the textbook.
+
+            \pending
+
+        \item Do Exercise C-10.12 of the textbook.
+
+            \pending
+
+
+    \end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}{Balanced Binary Search Trees}
+    \begin{enumerate}[label=(\arabic*)]
+        \item
+            Write a program \texttt{hw6\_2} that reads 32 strings (of length at
+            most 128 that can be compared lexicographically) line by line (each 
+            line containing one string) from \texttt{stdin} and inserts them to
+            the AVL tree (\texttt{avl.c}), height-bounded binary search tree 
+            (\texttt{bst.c}), and Red-Black tree (\texttt{rb.c}). Please output
+            the resulting trees (pre-order) to \texttt{stdout} with specific
+            format. 
+
+            \pending
+
+    \end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}{Disjoint Set}
+    \begin{enumerate}[label=(\arabic*)]
+        \item
+            Prove that the disjoint-set forest with this heuristic yields a 
+            worst-case running time for find and union within $O(\log n)$.
+
+            \pending
+
+        \item
+            Suppose that you only need to output $u$ rather than $u$ and $k$ for
+            this problem. Write down the pseudo-code of an efficient algorithm
+            based on the disjoint forest.
+
+            \pending
+
+        \item
+            Suppose that the prices of your friend $u$'s games are stored in a
+            balanced BST as keys, and you have access to the size and the sum of
+            all keys of any subtree of the BST in an $O(1)$ time, write down the
+            pseudo-code of an efficient algorithm for outputting $k$ for the 
+            particular $u$.
+
+            \pending
+
+        \item
+            If we take the same heuristic as (1) and always insert the elements
+            of the smaller BST into the bigger one, prove that processing all
+            incidents of the first kind takes $O(n(\log n) 2)$ time.
+
+            \pending
+
+        \item Write a program hw6 3 to solve the problem efficiently.
+
+            \pending[code part]
+
+    \end{enumerate}
 \end{homeworkProblem}
 
 \end{document}
