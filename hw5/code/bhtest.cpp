@@ -26,6 +26,7 @@ int main()
         std::cout << "insert [" << input[i] << "] to bh2,\t" 
                   << "bh2.size = " << bh2.size << std::endl;
     }
+    
     std::cout << "****************" << std::endl;
 
     std::cout << "****************" << std::endl;
