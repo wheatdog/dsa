@@ -112,7 +112,29 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
 
         \item Do Exercise C-10.12 of the textbook.
 
-            \pending
+            Consider this AVL tree.
+
+            \Tree [.25 [ [ 3 \\ ].5 [ 12 20 ].13 ].11 [ 27 40 ].37 ]
+
+            After insert 4, it becomes unbalanced.
+
+            \Tree [.25 [ [ [ \\ 4 ].3 \\ ].5 [ 12 20 ].13 ].11 [ 27 40 ].37 ]
+
+            We can easily find that the unbalanced nodes are 5 and 25, which
+            are nonconsecutive.
+
+            Then, consider this case.
+
+            \Tree [.25 [ 5 [ 12 20 ].13 ].11 [ 27 40 ].37 ]
+
+            After insert 21, it becomes unbalanced, and the unbalanced nodes are
+            13, 11 and 25, which are consecutive.
+
+            \Tree [.25 [ 5 [ 12 [ \\ 21 ].20 ].13 ].11 [ 27 40 ].37 ]
+
+            We conclude that the nodes that become unbalanced in an AVL tree during an
+            \texttt{insert} operation may be nonconsecutive on the path from the newly
+            inserted node to the root.
 
 
     \end{enumerate}
@@ -129,7 +151,11 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
             the resulting trees (pre-order) to \texttt{stdout} with specific
             format. 
 
-            \pending[code part]
+            Input:
+            \lstinputlisting[breaklines=true]{../code/test/hw6_2.ckeyword.in}
+
+            Output:
+            \lstinputlisting[breaklines=true]{../code/test/hw6_2.ckeyword.out}
 
     \end{enumerate}
 \end{homeworkProblem}
