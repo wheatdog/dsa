@@ -24,6 +24,7 @@
 
 
 \input{../../dep/dsa-hw-template.tex}
+\usepackage{qtree}
 
 \begin{document}
 
@@ -39,11 +40,75 @@
     \begin{enumerate}[label=(\arabic*)]
         \item Do Exercise C-9.15 of the textbook.
 
-            \pending
+            For every node, also store the width of the link. The width is 
+            defined as the number of bottom layer links being traversed by each
+            of the higher layer "express lane" links. Following is 
+            Example from \texttt{http://en.wikipedia.org/wiki/Skip\_list\#Indexable\_skiplist}
 
+    \begin{verbatim}
+   1                               10
+ o---> o---------------------------------------------------------> o   Top
+   1           3              2                    5
+ o---> o---------------> o---------> o---------------------------> o    
+   1        2        1        2                    5
+ o---> o---------> o---> o---------> o---------------------------> o   
+   1     1     1     1     1     1     1     1     1     1     1 
+ o---> o---> o---> o---> o---> o---> o---> o---> o---> o---> o---> o   Bottom
+                                         
+Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
+      Node  Node  Node  Node  Node  Node  Node  Node  Node  Node
+    \end{verbatim}
+
+            \begin{algorithm}[]
+                \begin{algorithmic}[1]
+                    \Function{Median}{}
+                    \State{node $\gets$ head}
+                    \State{remain $\gets \left \lfloor{\frac{n}{2}}\right \rfloor $}
+                    \While{\Call{Below}{node} $\neq$ null}
+                    \State{node $\gets$ \Call{Below}{node}}
+                        \While{remain $\geq$ \Call{Width}{node}}
+                            \State{remain $\gets$ remain $-$ \Call{Width}{node}}
+                            \State{node $\gets$ \Call{After}{node}}
+                        \EndWhile
+                    \EndWhile
+                    \State{\Return{node}}
+                    \EndFunction{}
+                \end{algorithmic}
+                \caption{Find the median element}
+            \end{algorithm}
+            We can use \alg{Width} function to get the width in $O(1)$ since we
+            store the value. This \alg{Median} function involes two nested 
+            \alg{while} loops. One performs a scan forward, and the other drops 
+            down to the next level. Since the height $h$ of $S$ is $O(\log n)$
+            with high probability, the number og drop-down steps is $O(\log n)$
+            with high probability. Let $n_i$ be the number of keys examined while
+            scanning forward at level $i$. We can easily observe that, after the
+            key at the starting postion, each additional key examined in a 
+            scan-forward at level $i$ cannot also belong to level $i+1$. If any
+            of these keys were on the previous level, we would have encountered
+            them in the previous level. Thus, the expected value of $n_i$ is 
+            exactly equal to the expected number of times we must flip a fair
+            coin before it comes up heads, That is 2. Hence, the expected amount
+            of time spent scanning forward at any level $i$ is $O(1)$. Since
+            $S$ has $O(\log n)$ levels with high probability, this \alg{Median}
+            function in $S$ takes expected time $O(\log n)$.
+
+
+            
         \item Do Exercise R-10.5 of the textbook.
 
-            \pending
+            Consider these two input orders, $\left\{\,1,3,2,4,5\,\right\}$ and
+            $\left\{\,4,2,1,5,3\,\right\}$. Note that these two sets contain
+            same entries $\left\{\,1,2,3,4,5\,\right\}$. We can easily find 
+            that they generate different trees.
+            \begin{figure}[h]
+                \Tree [.1 $\square$ [ [ $\square$ $\square$ ].2 [ $\square$ [ $\square$ $\square$ ].5 ].4 ].3 ]
+                \Tree [.4 [ [ $\square$ $\square$ ].1 [ $\square$ $\square$ ].3 ].2 [ $\square$ $\square$ ].5 ]
+                \caption{Left tree generates from $\left\{\,1,3,2,4,5\,\right\}$,
+                and right tree generates from $\left\{\,4,2,1,5,3\,\right\}$.}
+            \end{figure}
+
+            We conclude that the order of insertion does matter.
 
         \item Do Exercise C-10.12 of the textbook.
 
@@ -64,7 +129,7 @@
             the resulting trees (pre-order) to \texttt{stdout} with specific
             format. 
 
-            \pending
+            \pending[code part]
 
     \end{enumerate}
 \end{homeworkProblem}
@@ -100,7 +165,7 @@
 
             \pending
 
-        \item Write a program hw6 3 to solve the problem efficiently.
+        \item Write a program \texttt{hw6\_3} to solve the problem efficiently.
 
             \pending[code part]
 
