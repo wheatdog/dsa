@@ -160,13 +160,38 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
     \end{enumerate}
 \end{homeworkProblem}
 
+\pagebreak
+
 \begin{homeworkProblem}{Disjoint Set}
     \begin{enumerate}[label=(\arabic*)]
         \item
             Prove that the disjoint-set forest with this heuristic yields a 
             worst-case running time for find and union within $O(\log n)$.
 
-            \pending
+            We can provide a variable stored the height in every node. By doing 
+            so, \texttt{union} only take $O(1)$ since we just change the pointer
+            of root in shorter tree to the root of taller tree.
+
+            The worse-case running time of \texttt{find} depends on the depth of 
+            the tree.
+
+            We will prove that each \texttt{union} operation keeps trees within 
+            depth $O(\log n)$ by showing that within the forest, any tree of 
+            height $h$ always contains at least $2^h$ nodes.
+
+            \begin{itemize}
+                \item Base case: It is trivial that $h = 0$ is right.
+                \item Inductive hypothesis: assume true for $h - 1$. 
+                \item A tree of height $h$ is created only by \texttt{union}
+                    two trees of height $h - 1$
+                \item By inductive hypothesis, each subtree has $\geq 2^{h-1}$
+                    nodes $\Rightarrow$ resulting tree has $\geq 2^{h}$
+            \end{itemize}
+
+            We proved that any tree of height $h$ always contains at least $2^h$
+            nodes. That is, For any tree containing $n$ nodes, the height is 
+            $O(\log n)$. We can conclude that the worst-case running time for
+            \texttt{find} is also within $O(\log n)$.
 
         \item
             Suppose that you only need to output $u$ rather than $u$ and $k$ for
@@ -175,6 +200,7 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
 
             \pending
 
+            \pagebreak
         \item
             Suppose that the prices of your friend $u$'s games are stored in a
             balanced BST as keys, and you have access to the size and the sum of
@@ -182,7 +208,32 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
             pseudo-code of an efficient algorithm for outputting $k$ for the 
             particular $u$.
 
-            \pending
+            \begin{algorithm}[]
+                \begin{algorithmic}[1]
+                    \Function{GameNumCanBuy}{\emph{m, root}}
+                    \State{num $\gets$ 0}
+                    \If{the sum of all keys in root's left subtree $>$ m}
+                        \State{\Return{\Call{GameNumCanBuy}{\emph{m, root's left node}}}}
+                    \EndIf
+                    \State{m $\gets$ m - the sum of all keys in root's left subtree}
+                    \State{num $\gets$ num + the size of root's left subtree}
+                    \If{the key of the root $\leq$ m}
+                    \While{duplicate key count $>$ 0}
+                        \State{m $\gets$ m - the key of root}
+                        \State{num $\gets$ num + 1}
+                        \State{duplicate key count $\gets$ duplicate key count $-$ 1}
+                    \EndWhile
+                    \EndIf
+                    \If{the sum of all keys in root's right subtree $>$ m}
+                        \State{num $\gets$ num + \Call{GameNumCanBuy}{\emph{m, root's right node}}}
+                    \EndIf
+                    \State{m $\gets$ m - the sum of all keys in root's right subtree}
+                    \State{num $\gets$ num + the size of root's right subtree}
+                    \State{\Return{num}}
+                    \EndFunction{}
+                \end{algorithmic}
+                \caption{Find the maximum number of games can buy with m dollars}
+            \end{algorithm}
 
         \item
             If we take the same heuristic as (1) and always insert the elements
