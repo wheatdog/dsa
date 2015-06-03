@@ -1,11 +1,11 @@
 CC = gcc
 CXX = g++
 CFLAGS = -O2 -std=c99 -Wall #-DDEBUG
-CXXFLAGS = -O2 -std=c++11 -Wall 
+CXXFLAGS = -O2 -std=c++11 -Wall #-DDEBUG
 TEST = avl-test
 PROB1 = hw6_2
 PROB2 = hw6_3
-TARGET = $(TEST) $(PROB1) #$(PROB2)
+TARGET = $(TEST) $(PROB1) $(PROB2)
 TESTOBJ = avl.o rb.o bst.o avl-test.o
 OBJ1 = avl.o rb.o bst.o hw6_2.o
 OBJ2 = avl_ntudsa.o hw6_3.o
