@@ -9,23 +9,6 @@ extern "C"
 
 using namespace std;
 
-#ifdef DEBUG
-void preorder_avl(const struct avl_node *node)
-{
-    if (node == NULL)
-        return;
-    cout <<  (node->avl_data) << "<" << node->avl_cnt << ">";
-    if (node->avl_link[0] != NULL || node->avl_link[1] != NULL)
-    {
-        putchar('(');
-        preorder_avl(node->avl_link[0]);
-        putchar(',');
-        putchar(' ');
-        preorder_avl(node->avl_link[1]);
-        putchar(')');
-    }
-}
-#endif
 
 int NumCanBuy(struct avl_node *root, long long int money)
 {
@@ -82,9 +65,6 @@ int main()
 
                 if (target == boring)
                     break;
-#ifdef DEBUG
-                cout << "merge(" << boring << " " << target << ")" << endl;
-#endif
                 games.Union(boring, target);
 
             } break;
@@ -99,22 +79,9 @@ int main()
                 int targetOwner = games.Owner(games.Find(gameID));
                 struct avl_table* tree = games.GetTree(ownerTopGameID);
 
-#ifdef DEBUG
-                for (int i = 153; i <= 159; i++) {
-                    cout << "*************" << endl;
-                    cout << " " << i << endl;
-                    int test = games.Find(i);
-                    struct avl_table* ttree = games.GetTree(test);
-                    preorder_avl(ttree->avl_root); cout << endl;
-                    cout << "*************" << endl;
-                }
-#endif
 
                 int num = NumCanBuy(tree->avl_root, money);
                 cout << targetOwner << " " << num << endl;
-#ifdef DEBUG
-                cout << targetOwner << " has " << gameID << endl;
-#endif
             } break;
         }
         incidentCount++;

@@ -4,9 +4,6 @@ extern "C"
 {
 #include "avl_ntudsa.h"
 }
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 int Compare_by_int(const void *pa, const void *pb, void *param)
 {
@@ -82,19 +79,6 @@ void DSF::Union(int first, int second)
         insert(target, tmp->avl_root);
     }
 
-#ifdef DEBUG
-    for (unsigned int i = 153; i < 160; i++)
-        std::cout <<  elements[i] << " ";
-    std::cout << std::endl;
-
-    for (unsigned int i = 153; i < 160; i++)
-        std::cout <<  depthTable[i] << " ";
-    std::cout << std::endl;
-
-    for (unsigned int i = 153; i < 160; i++)
-        std::cout <<  ownerTable[i] << " ";
-    std::cout << std::endl;
-#endif 
 }
 
 int DSF::Owner(int n)
