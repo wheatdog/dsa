@@ -198,7 +198,19 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
             this problem. Write down the pseudo-code of an efficient algorithm
             based on the disjoint forest.
 
-            \pending
+            \begin{algorithm}[]
+                \begin{algorithmic}[1]
+                    \Function{Owner}{id, OwnerTable}
+                    \State{t $\gets$ \Call{Find}{id}}
+                    \State{\Return{OwnerTable[t]}}
+                    \EndFunction{}
+                \end{algorithmic}
+                \caption{An efficient algorithm to output $u$ based on the disjoint forest.}
+            \end{algorithm}
+
+            An array \alg{OwnerTable} store the real owner of every sets in the index 
+            of the top node of the tree. Everytime we \alg{Union} two sets, we will 
+            adjust \alg{OwnerTable} properly.
 
             \pagebreak
         \item
@@ -217,13 +229,14 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
                     \EndIf
                     \State{m $\gets$ m - the sum of all keys in root's left subtree}
                     \State{num $\gets$ num + the size of root's left subtree}
-                    \If{the key of the root $\leq$ m}
                     \While{duplicate key count $>$ 0}
+                    \If{m $<$ the key of the root}
+                    \State{break the while loop}
+                    \EndIf
                         \State{m $\gets$ m - the key of root}
                         \State{num $\gets$ num + 1}
                         \State{duplicate key count $\gets$ duplicate key count $-$ 1}
                     \EndWhile
-                    \EndIf
                     \If{the sum of all keys in root's right subtree $>$ m}
                         \State{num $\gets$ num + \Call{GameNumCanBuy}{\emph{m, root's right node}}}
                     \EndIf
@@ -238,13 +251,19 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
         \item
             If we take the same heuristic as (1) and always insert the elements
             of the smaller BST into the bigger one, prove that processing all
-            incidents of the first kind takes $O(n(\log n) 2)$ time.
+            incidents of the first kind takes $O(n(\log n)^2)$ time.
 
-            \pending
+            The worst case is that we always \alg{Union} two BSTs of same size. 
+            Suppose $n = 2^{k+1}$, \alg{Union} all BSTs in this case, 
 
-        \item Write a program \texttt{hw6\_3} to solve the problem efficiently.
+            \begin{align*}
+                1 \log_2{2} + 2 \log_2{4} + 4 \log_2{8} + \cdots + 2^{k-1} \log_2{2^k} + 2^k \log_2{2^{k+1}} &\leq (k+1) \times 2^k \log_2{2^{k+1}}  \\
+                &= (k+1)^2 \times 2^k \\
+                &\leq (k+1)^2 \times 2^{k+1} \\
+                &= \frac{1}{(\log2)^2} \times n (\log n)^2
+            \end{align*}
 
-            \pending[code part]
+            It implies that processing all incidents of the first kind takes $O(n(\log n)^2)$ time.
 
     \end{enumerate}
 \end{homeworkProblem}
