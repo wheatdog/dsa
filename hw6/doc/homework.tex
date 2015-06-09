@@ -257,7 +257,7 @@ Head  1st   2nd   3rd   4th   5th   6th   7th   8th   9th   10th  NIL
             Suppose $n = 2^{k+1}$, \alg{Union} all BSTs in this case, 
 
             \begin{align*}
-                1 \log_2{2} + 2 \log_2{4} + 4 \log_2{8} + \cdots + 2^{k-1} \log_2{2^k} + 2^k \log_2{2^{k+1}} &\leq (k+1) \times 2^k \log_2{2^{k+1}}  \\
+                2^k \times 1 \log_2{2} + 2^{k-1} \times 2 \log_2{4} + \cdots + 2 \times2^{k-1} \log_2{2^k} + 1 \times 2^k \log_2{2^{k+1}} &\leq (k+1) \times 2^k \log_2{2^{k+1}}  \\
                 &= (k+1)^2 \times 2^k \\
                 &\leq (k+1)^2 \times 2^{k+1} \\
                 &= \frac{1}{(\log2)^2} \times n (\log n)^2
