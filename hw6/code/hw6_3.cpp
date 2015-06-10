@@ -21,12 +21,19 @@ int NumCanBuy(struct avl_node *root, long long int money)
     money -= root->avl_sum[0];
     int num = root->avl_cnode[0];
 
+    long long int numCanBuy = money / root->avl_data;
+    long long int numBought = (numCanBuy > root->avl_cnt)? root->avl_cnt : numCanBuy;
+    num += numBought;
+    money -= numBought * root->avl_data;
+
+    /*
     for (int count = 0; count < root->avl_cnt; count++) {
         if (root->avl_data > money)
             break;
         num++;
         money -= root->avl_data;
     }
+    */
 
     if (root->avl_sum[1] > money)
         return num + NumCanBuy(root->avl_link[1], money);
